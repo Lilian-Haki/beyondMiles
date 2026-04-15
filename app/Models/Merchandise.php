@@ -5,24 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends Model
+class Merchandise extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'name',
         'description',
-        'type',
-        'event_date',
-        'status',
-        'location',
+        'category',
         'price',
-        'capacity',
         'image',
+        'stock_quantity',
+        'is_active',
     ];
 
     protected $casts = [
-        'event_date' => 'datetime',
         'price' => 'decimal:2',
+        'is_active' => 'boolean',
     ];
 }

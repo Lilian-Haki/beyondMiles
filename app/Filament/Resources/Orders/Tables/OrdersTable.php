@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\Members\Tables;
+namespace App\Filament\Resources\Orders\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
-use Filament\Actions\RestoreBulkAction;
-use Filament\Tables\Filters\TrashedFilter;
+use Filament\Actions;
+use Filament\Tables;
 use Filament\Tables\Table;
 
-class MembersTable
+class OrdersTable
 {
     public static function configure(Table $table): Table
     {

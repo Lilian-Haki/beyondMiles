@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Events;
+namespace App\Filament\Resources\Locations;
 
-use App\Filament\Resources\Events\Pages\CreateEvent;
-use App\Filament\Resources\Events\Pages\EditEvent;
-use App\Filament\Resources\Events\Pages\ListEvents;
-use App\Filament\Resources\Events\Schemas\EventForm;
-use App\Filament\Resources\Events\Tables\EventsTable;
-use App\Models\Event;
+use App\Filament\Resources\Locations\Pages\CreateLocation;
+use App\Filament\Resources\Locations\Pages\EditLocation;
+use App\Filament\Resources\Locations\Pages\ListLocations;
+use App\Filament\Resources\Locations\Schemas\LocationForm;
+use App\Filament\Resources\Locations\Tables\LocationsTable;
+use App\Models\Location;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,21 +16,21 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EventResource extends Resource
+class LocationResource extends Resource
 {
-    protected static ?string $model = Event::class;
+    protected static ?string $model = Location::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'location';
 
 public static function configure(Schema $schema): Schema    {
-        return EventForm::configure($schema);
+        return LocationForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return EventsTable::configure($table);
+        return LocationsTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -43,9 +43,9 @@ public static function configure(Schema $schema): Schema    {
     public static function getPages(): array
     {
         return [
-            'index' => ListEvents::route('/'),
-            'create' => CreateEvent::route('/create'),
-            'edit' => EditEvent::route('/{record}/edit'),
+            'index' => ListLocations::route('/'),
+            'create' => CreateLocation::route('/create'),
+            'edit' => EditLocation::route('/{record}/edit'),
         ];
     }
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\Events;
+namespace App\Filament\Resources\Merchandises;
 
-use App\Filament\Resources\Events\Pages\CreateEvent;
-use App\Filament\Resources\Events\Pages\EditEvent;
-use App\Filament\Resources\Events\Pages\ListEvents;
-use App\Filament\Resources\Events\Schemas\EventForm;
-use App\Filament\Resources\Events\Tables\EventsTable;
-use App\Models\Event;
+use App\Filament\Resources\Merchandises\Pages\CreateMerchandise;
+use App\Filament\Resources\Merchandises\Pages\EditMerchandise;
+use App\Filament\Resources\Merchandises\Pages\ListMerchandises;
+use App\Filament\Resources\Merchandises\Schemas\MerchandiseForm;
+use App\Filament\Resources\Merchandises\Tables\MerchandisesTable;
+use App\Models\Merchandise;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,21 +16,21 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EventResource extends Resource
+class MerchandiseResource extends Resource
 {
-    protected static ?string $model = Event::class;
+    protected static ?string $model = Merchandise::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'merch';
 
 public static function configure(Schema $schema): Schema    {
-        return EventForm::configure($schema);
+        return MerchandiseForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return EventsTable::configure($table);
+        return MerchandisesTable::configure($table);
     }
 
     public static function getRelations(): array
@@ -43,9 +43,9 @@ public static function configure(Schema $schema): Schema    {
     public static function getPages(): array
     {
         return [
-            'index' => ListEvents::route('/'),
-            'create' => CreateEvent::route('/create'),
-            'edit' => EditEvent::route('/{record}/edit'),
+            'index' => ListMerchandises::route('/'),
+            'create' => CreateMerchandise::route('/create'),
+            'edit' => EditMerchandise::route('/{record}/edit'),
         ];
     }
 
