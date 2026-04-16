@@ -24,7 +24,8 @@ class OrderResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'order';
 
-public static function configure(Schema $schema): Schema    {
+    public static function form(Schema $schema): Schema
+    {
         return OrderForm::configure($schema);
     }
 

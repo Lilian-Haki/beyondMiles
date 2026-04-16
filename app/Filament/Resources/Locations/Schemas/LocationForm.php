@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Locations\Schemas;
 
-use Filament\Forms;
-use Filament\Forms\Schema;
+use Filament\Forms\Components as FormComponents;
+use Filament\Schemas\Components;
+use Filament\Schemas\Schema;
 
 class LocationForm
 {
@@ -11,23 +12,33 @@ class LocationForm
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Location Details')
+                Components\Section::make('Location Details')
+                    ->description('Enter location information')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        FormComponents\TextInput::make('name')
+                            ->label('Location Name')
+                            ->placeholder('e.g., Downtown Gym, Central Park')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
+                        FormComponents\Textarea::make('description')
+                            ->label('Description')
+                            ->placeholder('Add details about the location, facilities, etc.')
                             ->maxLength(65535)
                             ->columnSpanFull(),
-                        Forms\Components\TextInput::make('address')
+                        FormComponents\TextInput::make('address')
+                            ->label('Street Address')
+                            ->placeholder('e.g., 123 Main St, City, State')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('latitude')
+                        FormComponents\TextInput::make('latitude')
+                            ->label('Latitude')
                             ->numeric()
                             ->step(0.000001),
-                        Forms\Components\TextInput::make('longitude')
+                        FormComponents\TextInput::make('longitude')
+                            ->label('Longitude')
                             ->numeric()
                             ->step(0.000001),
-                        Forms\Components\Select::make('type')
+                        FormComponents\Select::make('type')
+                            ->label('Location Type')
                             ->options([
                                 'gym' => 'Gym',
                                 'event_location' => 'Event Location',
@@ -36,7 +47,8 @@ class LocationForm
                             ])
                             ->default('gym')
                             ->required(),
-                        Forms\Components\Toggle::make('is_active')
+                        FormComponents\Toggle::make('is_active')
+                            ->label('Active Location')
                             ->default(true),
                     ])
                     ->columns(2),

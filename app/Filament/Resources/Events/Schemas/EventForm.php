@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Events\Schemas;
 
-use Filament\Forms;
-use Filament\Forms\Schema;
+use Filament\Forms\Components as FormComponents;
+use Filament\Schemas\Components;
+use Filament\Schemas\Schema;
 
 class EventForm
 {
@@ -11,40 +12,53 @@ class EventForm
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Event Details')
+                Components\Section::make('Event Details')
+                    ->description('Enter the event information below')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        FormComponents\TextInput::make('name')
+                            ->label('Event Name')
+                            ->placeholder('e.g., Mountain Hike Adventure')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
+                        FormComponents\Textarea::make('description')
+                            ->label('Description')
+                            ->placeholder('Describe the event details, difficulty level, what to bring, etc.')
                             ->maxLength(65535)
                             ->columnSpanFull(),
-                        Forms\Components\Select::make('type')
+                        FormComponents\Select::make('type')
+                            ->label('Activity Type')
                             ->options([
                                 'hike' => 'Hike',
                                 'run' => 'Run',
                                 'walk' => 'Walk',
                             ])
                             ->required(),
-                        Forms\Components\DateTimePicker::make('event_date')
+                        FormComponents\DateTimePicker::make('event_date')
+                            ->label('Event Date & Time')
                             ->required(),
-                        Forms\Components\Select::make('status')
+                        FormComponents\Select::make('status')
+                            ->label('Event Status')
                             ->options([
                                 'upcoming' => 'Upcoming',
                                 'past' => 'Past',
                             ])
                             ->default('upcoming')
                             ->required(),
-                        Forms\Components\TextInput::make('location')
+                        FormComponents\TextInput::make('location')
+                            ->label('Location')
+                            ->placeholder('e.g., Rocky Mountains, Colorado')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('price')
+                        FormComponents\TextInput::make('price')
+                            ->label('Entry Price')
                             ->numeric()
                             ->prefix('$')
                             ->minValue(0),
-                        Forms\Components\TextInput::make('capacity')
+                        FormComponents\TextInput::make('capacity')
+                            ->label('Participant Capacity')
                             ->numeric()
                             ->minValue(0),
-                        Forms\Components\FileUpload::make('image')
+                        FormComponents\FileUpload::make('image')
+                            ->label('Event Image')
                             ->image()
                             ->directory('events')
                             ->columnSpanFull(),

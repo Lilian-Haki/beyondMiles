@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\Orders\Schemas;
 
-use Filament\Forms;
-use Filament\Forms\Schema;
+use Filament\Forms\Components as FormComponents;
+use Filament\Schemas\Components;
+use Filament\Schemas\Schema;
 
 class OrderForm
 {
@@ -11,21 +12,27 @@ class OrderForm
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Order Details')
+                Components\Section::make('Order Details')
+                    ->description('Manage customer order information')
                     ->schema([
-                        Forms\Components\Select::make('user_id')
+                        FormComponents\Select::make('user_id')
+                            ->label('Customer')
                             ->relationship('user', 'name')
                             ->required()
                             ->searchable(),
-                        Forms\Components\TextInput::make('order_number')
+                        FormComponents\TextInput::make('order_number')
+                            ->label('Order Number')
+                            ->placeholder('e.g., ORD-2026-001')
                             ->required()
                             ->unique(ignoreRecord: true),
-                        Forms\Components\TextInput::make('total_amount')
+                        FormComponents\TextInput::make('total_amount')
+                            ->label('Total Amount')
                             ->required()
                             ->numeric()
                             ->prefix('$')
                             ->minValue(0),
-                        Forms\Components\Select::make('status')
+                        FormComponents\Select::make('status')
+                            ->label('Order Status')
                             ->options([
                                 'pending' => 'Pending',
                                 'paid' => 'Paid',
@@ -35,10 +42,15 @@ class OrderForm
                             ])
                             ->default('pending')
                             ->required(),
-                        Forms\Components\TextInput::make('payment_method'),
-                        Forms\Components\Textarea::make('notes')
+                        FormComponents\TextInput::make('payment_method')
+                            ->label('Payment Method')
+                            ->placeholder('e.g., Credit Card, PayPal'),
+                        FormComponents\Textarea::make('notes')
+                            ->label('Order Notes')
+                            ->placeholder('Add any special instructions or notes')
                             ->columnSpanFull(),
-                        Forms\Components\DateTimePicker::make('paid_at'),
+                        FormComponents\DateTimePicker::make('paid_at')
+                            ->label('Paid Date & Time'),
                     ])
                     ->columns(2),
             ]);
