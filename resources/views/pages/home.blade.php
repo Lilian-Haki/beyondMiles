@@ -69,35 +69,24 @@ new class extends Component
 <h2 class="text-3xl font-extrabold mb-2">Our Activities</h2>
 <p class="text-slate-600 dark:text-slate-400">Discover your next challenge</p>
 </div>
-<a class="text-primary font-bold flex items-center gap-2 group" href="#">
+<a class="text-primary font-bold flex items-center gap-2 group" href="/activities" wire:navigate>
                     View All <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
 </a>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Hikes -->
+@forelse($events as $event)
 <div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Misty mountain trails for professional hiking" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoV8H57PlaSEvwTMU-ZAuvPSjzCHVy3lU4l15hPbMXNKZ0pPt2JfGYlGT-_cgGsxbD8MeUxYaDFm6UQCtggjILbqWRAnFWnYszZKJIRzG5OxUlVKiY19Hn9dZfo_iG-J0wm91PXm_H1jowtWnIydF_6rAcG9Qp5IUERmoC_fZ11YBweq5H6DpUMUt2lgxyHdP_jR6LYpyanoc9770URC9iTanXXFkOKOJfSSt_BCRn0DebIK8F5uulZQB0MrlfNAh0_fOpi1htzns");'></div>
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80' }}");'></div>
 <div class="absolute bottom-0 p-8">
-<h3 class="text-2xl font-bold text-white mb-2">Hikes</h3>
-<p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">From coastal trails to alpine summits.</p>
+<h3 class="text-2xl font-bold text-white mb-2">{{ $event->name }}</h3>
+<p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">{{ $event->description }}</p>
 </div>
 </div>
-<!-- Runs -->
-<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Trail runner sprinting on a forest path" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUfb0hULwhgSrAZQXLTRM5_MGt-VfaVMmS-7Oz53H04SjIrmJbTTAGGyGRI8pxrUSUOdz7h90QMfGpqxAV6QYHDePEkG261M9ByOWvbsoo_OIEH5RR271kTavZvl5HfoGVU_PE_LRBFJ244N6-jLKymC2bdejf2za05vy3qMtkN53Lp7VGcrfcY4o9Y2m4wASjx_7aliyTyGsnOiEmauYaWRJwHTq4q-aFYH4IkZ9U3G_pDaoByJTzywoAWgBX9bJ4oZ8ItLSuGSk");'></div>
-<div class="absolute bottom-0 p-8">
-<h3 class="text-2xl font-bold text-white mb-2">Runs</h3>
-<p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Endurance trail running events and training.</p>
+@empty
+<div class="col-span-full text-center py-12 text-slate-600 dark:text-slate-400">
+<p class="text-lg">No upcoming activities yet. Check back soon!</p>
 </div>
-</div>
-<!-- Walks -->
-<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Peaceful sunlit path through ancient woods" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBU-YZP_il8FnLUnQ5H-Y7snasER6HXmE3EyfiYFDAuQmZBJpmLAdiqhhV-0UnRdJHXbGWrgdKjv-mMXUU_g_TJEsv3ETaGXn1pCwXIxUe56f8vKtoKVKfM1US_l0B460MpcgXWRz4QlQvKk4J84CQZDWzeAECGzG6_1Ynpmhv9s4aV_aLKqWLeAziqYkW3NgSkXEMzkZTCvnbLfC42xg3AJvpfSCuMdT4rwVpSdGw8kE0RFP-iubIA6_YRcD77sIglK-2xtmE07B0");'></div>
-<div class="absolute bottom-0 p-8">
-<h3 class="text-2xl font-bold text-white mb-2">Walks</h3>
-<p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Guided nature walks and mindful exploration.</p>
-</div>
-</div>
+@endforelse
 </div>
 </section>
 <!-- Featured Gear -->
@@ -115,74 +104,31 @@ new class extends Component
 </div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-<!-- Gear Item 1 -->
+@forelse($merchandise as $item)
 <div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
 <div class="h-64 bg-slate-200 overflow-hidden">
-<img alt="Technical shell jacket" class="w-full h-full object-cover" data-alt="Technical waterproof shell jacket in orange" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7C0e4D1G5RvMWOR4C7eM4r75hdgzJcRlOp1Kg4wdOpt9F-CDCBsfsCAuQNnS_jBxx2GZ60oROvaEEN8VK502vwwRJ3j9xFprNt1uthCSPFK_4mxSeGRa_ql0wMQXQWByl065ocZQYduuqxF_dfhb5tfMgWLSBR4gWg8T2Ldkz4dvOb-yNwc8ZZ9CkFPUx_8LaudYIpkmotEywmgnz87LKgfIeqzsDqQ4M7dyfxEkYVS9EnCWo0UNgl3UHm7vYNv7aDLeraFWIoyA"/>
+<img alt="{{ $item->name }}" class="w-full h-full object-cover" src="{{ $item->image ? asset('storage/' . $item->image) : 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80' }}"/>
 </div>
 <div class="p-6">
-<span class="text-xs font-bold text-primary uppercase tracking-wider">New Arrival</span>
-<h4 class="text-lg font-bold mt-1">Summit Shell 2.0</h4>
-<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">All-weather protection.</p>
+<span class="text-xs font-bold text-primary uppercase tracking-wider">{{ ucfirst($item->category) }}</span>
+<h4 class="text-lg font-bold mt-3">{{ $item->name }}</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">{{ Str::limit($item->description, 60) }}</p>
 <div class="mt-6 flex items-center justify-between">
-<span class="font-bold text-xl">$249</span>
+<span class="font-bold text-xl">${{ number_format($item->price, 2) }}</span>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500 dark:text-slate-400">{{ $item->stock }} stock</span>
 <button class="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors">
 <span class="material-symbols-outlined text-base">shopping_cart</span>
 </button>
 </div>
 </div>
 </div>
-<!-- Gear Item 2 -->
-<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
-<div class="h-64 bg-slate-200 overflow-hidden">
-<img alt="Running Shoes" class="w-full h-full object-cover" data-alt="Red trail running shoes on a plain background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqB_yvGTYraRBBvBo0xom6xbQJIydua_yh8VwfQRtAnHFWpF-Il4a1LpC6hgHopyQGXL3L85G121IRf2ODD8vMzQkK-QdIY0aj_i_0hPPxG21WLpFiRKUZWTTzs5-UYiSne-4lI1KQXBNifSJ5m3lz4EwQkWgbg-0EJnl021XcabXWh6OAqPZNsuAn-6yv54QZ61JKHRNLubTmt_ImdeK-10F2M-DXOFyfwwr9kdF6BlkUgDYBknz0MZac3IF6lGQ0c-QLjAq_a84"/>
 </div>
-<div class="p-6">
-<span class="text-xs font-bold text-primary uppercase tracking-wider">Best Seller</span>
-<h4 class="text-lg font-bold mt-1">Trail Max Runners</h4>
-<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Maximum grip and comfort.</p>
-<div class="mt-6 flex items-center justify-between">
-<span class="font-bold text-xl">$160</span>
-<button class="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors">
-<span class="material-symbols-outlined text-base">shopping_cart</span>
-</button>
+@empty
+<div class="col-span-full text-center py-12 text-slate-600 dark:text-slate-400">
+<p class="text-lg">No merchandise available yet.</p>
 </div>
-</div>
-</div>
-<!-- Gear Item 3 -->
-<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
-<div class="h-64 bg-slate-200 overflow-hidden">
-<img alt="Smart Watch" class="w-full h-full object-cover" data-alt="White minimalist adventure smartwatch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcr8JZSLI_TAem5Sbsr-1KwuTsU2sSGs271oCTExz_XaE_Q8p9LmgRVqVM07oaa8Wt_cfUqAGOWKLlfOr0h3D7m6qGal5PpvHfI99_MgjGpyy4Q3NWBJ0A5sIemoC0EjuSeuFCGdKMJtSkGzm8T-uut2379W36UtIR_eNQbwc5SuOelMhIuj4c2tdSahF2e5DVH69cpBRdT9EM1FfAKkNCzAwqSVjIJizIBvh10BojtIAyqqPnIXKRd8CXF6HRIPeS13mzJrs4yVo"/>
-</div>
-<div class="p-6">
-<span class="text-xs font-bold text-primary uppercase tracking-wider">Essential</span>
-<h4 class="text-lg font-bold mt-1">Vantage GPS Pro</h4>
-<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Track every metric.</p>
-<div class="mt-6 flex items-center justify-between">
-<span class="font-bold text-xl">$399</span>
-<button class="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors">
-<span class="material-symbols-outlined text-base">shopping_cart</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Gear Item 4 -->
-<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
-<div class="h-64 bg-slate-200 overflow-hidden">
-<img alt="Backpack" class="w-full h-full object-cover" data-alt="Professional multi-day hiking backpack" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDffuegMu9Po7Yr_znBcaxIB-1k289blTIyjf1j0VGQWTGMJ4O7GKNwE26fSzp86NfdAVVeRQRoIXLz4ltmVVhx861LLqXRrB4ZRGUky7zF36qpfSRjQCb4P8pWVSEYS6DYcbq8UAJOKpcoGxN3yAfgeMLluUkcIHYOIabsKvQIDvqP6g2nbJVXEKa0flKxLBXnFAwr_cADW6QiU-IxkSktDaBeg3lCAz9SG6csBkSnXomduvqJhvvodTLPU6m8AmqMAdtN555qkGc"/>
-</div>
-<div class="p-6">
-<span class="text-xs font-bold text-primary uppercase tracking-wider">Gear Up</span>
-<h4 class="text-lg font-bold mt-1">Exodus 45L Pack</h4>
-<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">Lightweight expedition ready.</p>
-<div class="mt-6 flex items-center justify-between">
-<span class="font-bold text-xl">$185</span>
-<button class="p-2 rounded-lg bg-primary/20 text-primary hover:bg-primary hover:text-white transition-colors">
-<span class="material-symbols-outlined text-base">shopping_cart</span>
-</button>
-</div>
-</div>
-</div>
+@endforelse
 </div>
 </div>
 </section>

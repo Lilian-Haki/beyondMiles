@@ -31,11 +31,11 @@ use Livewire\Component;
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="/activities" wire:navigate>Activities</a>
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="/gym" wire:navigate>Gym</a>
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="/shop" wire:navigate>Shop</a>
-<a class="text-sm font-semibold hover:text-primary transition-colors" href="/community" wire:navigate>Community</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="https://wa.me/254757151520" target="_blank">Community</a>
 </nav>
 <div class="flex items-center gap-4">
 <button class="px-6 py-2 rounded-lg bg-primary text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity">
-                        Login
+                        DOWNLOAD APP
                     </button>
 <button class="md:hidden text-slate-900 dark:text-slate-100">
 <span class="material-symbols-outlined">menu</span>

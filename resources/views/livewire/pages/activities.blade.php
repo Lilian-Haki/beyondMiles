@@ -1,5 +1,4 @@
 <?php
-
 use Livewire\Component;
 
 new class extends Component
@@ -7,117 +6,109 @@ new class extends Component
     //
 };
 ?>
-<div>
-<!DOCTYPE html>
 
-<html class="scroll-smooth" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Activities | Beyond Miles Adventure</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;300;400;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "outline": "#cbd5e1",
-                    "surface-container-high": "#e9e8e5",
-                    "on-primary-container": "#221910",
-                    "on-tertiary-container": "#00405c",
-                    "primary": "#f48c25",
-                    "primary-fixed-dim": "#ffb77d",
-                    "tertiary": "#00658e",
-                    "surface-container-lowest": "#ffffff",
-                    "secondary-container": "#f1f5f9",
-                    "surface-tint": "#f48c25",
-                    "on-background": "#0f172a",
-                    "surface-dim": "#e9d7cb",
-                    "on-secondary-fixed-variant": "#334155",
-                    "on-tertiary-fixed-variant": "#004c6c",
-                    "on-secondary": "#ffffff",
-                    "tertiary-fixed-dim": "#84cfff",
-                    "surface-container-highest": "#e2e1de",
-                    "on-secondary-container": "#0f172a",
-                    "secondary-fixed-dim": "#cbd5e1",
-                    "inverse-primary": "#ffb77d",
-                    "on-error": "#ffffff",
-                    "tertiary-container": "#00b1f5",
-                    "on-primary-fixed": "#2f1500",
-                    "on-secondary-fixed": "#0f172a",
-                    "surface-container-low": "#f8f7f5",
-                    "on-tertiary": "#ffffff",
-                    "secondary": "#334155",
-                    "on-surface": "#0f172a",
-                    "on-tertiary-fixed": "#001e2e",
-                    "error": "#ba1a1a",
-                    "error-container": "#ffdad6",
-                    "surface": "#f8f7f5",
-                    "surface-bright": "#ffffff",
-                    "on-primary": "#0f172a",
-                    "outline-variant": "#e2e8f0",
-                    "on-primary-fixed-variant": "#6e3900",
-                    "surface-variant": "#f1f0ee",
-                    "primary-container": "#f48c25",
-                    "on-error-container": "#93000a",
-                    "background": "#f8f7f5",
-                    "on-surface-variant": "#475569",
-                    "primary-fixed": "#ffdcc3",
-                    "inverse-on-surface": "#f8f7f5",
-                    "secondary-fixed": "#e2e8f0",
-                    "inverse-surface": "#221910",
-                    "surface-container": "#f1f0ee",
-                    "tertiary-fixed": "#c7e7ff"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "outline": "#cbd5e1",
+                "surface-container-high": "#e9e8e5",
+                "on-primary-container": "#221910",
+                "on-tertiary-container": "#00405c",
+                "primary": "#f48c25",
+                "primary-fixed-dim": "#ffb77d",
+                "tertiary": "#00658e",
+                "surface-container-lowest": "#ffffff",
+                "secondary-container": "#f1f5f9",
+                "surface-tint": "#f48c25",
+                "on-background": "#0f172a",
+                "surface-dim": "#e9d7cb",
+                "on-secondary-fixed-variant": "#334155",
+                "on-tertiary-fixed-variant": "#004c6c",
+                "on-secondary": "#ffffff",
+                "tertiary-fixed-dim": "#84cfff",
+                "surface-container-highest": "#e2e1de",
+                "on-secondary-container": "#0f172a",
+                "secondary-fixed-dim": "#cbd5e1",
+                "inverse-primary": "#ffb77d",
+                "on-error": "#ffffff",
+                "tertiary-container": "#00b1f5",
+                "on-primary-fixed": "#2f1500",
+                "on-secondary-fixed": "#0f172a",
+                "surface-container-low": "#f8f7f5",
+                "on-tertiary": "#ffffff",
+                "secondary": "#334155",
+                "on-surface": "#0f172a",
+                "on-tertiary-fixed": "#001e2e",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "surface": "#f8f7f5",
+                "surface-bright": "#ffffff",
+                "on-primary": "#0f172a",
+                "outline-variant": "#e2e8f0",
+                "on-primary-fixed-variant": "#6e3900",
+                "surface-variant": "#f1f0ee",
+                "primary-container": "#f48c25",
+                "on-error-container": "#93000a",
+                "background": "#f8f7f5",
+                "on-surface-variant": "#475569",
+                "primary-fixed": "#ffdcc3",
+                "inverse-on-surface": "#f8f7f5",
+                "secondary-fixed": "#e2e8f0",
+                "inverse-surface": "#221910",
+                "surface-container": "#f1f0ee",
+                "tertiary-fixed": "#c7e7ff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "fontFamily": {
+                "headline": ["Lexend"],
+                "body": ["Lexend"],
+                "label": ["Lexend"]
+              }
             },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Lexend"],
-                    "body": ["Lexend"],
-                    "label": ["Lexend"]
-            }
           },
-        },
-      }
+        }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .scrim-bottom {
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 50%, transparent 100%);
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0) 100%);
         }
-        .text-outline-thin {
-            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+        .scrim-hero {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
         }
     </style>
+    <title>Activities | Beyond Miles Adventure</title>
 </head>
-<body class="bg-surface font-body text-on-surface overflow-x-hidden">
-
-<main>
-<!-- Hero Section -->
-<section class="relative h-[614px] w-full overflow-hidden mb-24">
+<body class="bg-background dark:bg-inverse-surface font-body text-on-background dark:text-inverse-on-surface">
+<div>  
+    <!-- Hero Section -->
+<section class="relative h-[314px] w-full overflow-hidden mb-24">
 <div class="absolute inset-0 bg-slate-900">
 <img class="w-full h-full object-cover opacity-70" data-alt="cinematic wide shot of jagged mountain peaks at dawn with mist swirling in the valleys and golden sunlight hitting the summits" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP_Ky6HSABYa1tRMzQIdRP-j8FMBvRGXDjVzeN01zFph9qyUXEx9tk38xVYYRNJRDtryxDbbX87gB4bRRd6R4fcXIkF6GI-cKdRwGUsfds8AhJx0P7BSBOFA2yxyHl6BKXrVAxvWtbIHYOz41c4Y2ukEjKg7PKfuPxhKgAfyBjxlDVt3Rqxb-fSHpZbXuYiyPIjmCL_MehioTKRMLh_giOXGZtnuQ0b2bEE0q_M_8Yf7oEeKsfks4yxSwhsVJWpoOWuoCpVbRE13s"/>
 </div>
 <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
-<div class="relative h-full flex flex-col justify-center px-12 max-w-8xl mx-auto">
-<span class="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4">The Frontier Awaits</span>
-<h1 class="text-6xl md:text-8xl font-black tracking-tighter text-on-surface uppercase leading-[0.9]">Explore<br/>The Unseen</h1>
-<p class="max-w-md mt-8 text-on-surface-variant leading-relaxed">High-performance expeditions designed for those who find peace in the rugged terrain and clarity in the thin air.</p>
-</div>
-</section>
-<!-- Upcoming Activities - Grid Layout -->
+</section>  
 <section class="px-12 max-w-8xl mx-auto mb-32">
-<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-<div>
+    <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div>
 <h2 class="text-4xl font-black uppercase tracking-tight text-on-surface">Upcoming Activities</h2>
 <p class="text-on-surface-variant mt-2">Secure your spot on our next seasonal deployments.</p>
 </div>
@@ -127,8 +118,44 @@ new class extends Component
 <button class="p-3 bg-surface-container hover:bg-primary hover:text-white transition-colors rounded-lg"><span class="material-symbols-outlined">chevron_right</span></button>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<!-- Activity Card 1 -->
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @forelse($events as $event)
+                <div class="rounded-xl overflow-hidden border border-outline-variant dark:border-slate-800 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-surface-container-low dark:bg-surface-container-high">
+                    <div class="h-48 bg-surface-container-high overflow-hidden">
+                        <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80' }}"
+                             alt="{{ $event->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+                    </div>
+                    <div class="p-6 bg-surface dark:bg-surface-container">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-label font-semibold">{{ ucfirst($event->type) }}</span>
+                            <span class="text-xs font-label font-bold px-2 py-1 rounded {{ $event->status === 'upcoming' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-container-high text-on-surface-variant' }}">
+                                {{ ucfirst($event->status) }}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-headline font-bold mb-2 text-on-surface dark:text-on-background">{{ $event->name }}</h3>
+                        <p class="text-on-surface-variant dark:text-slate-400 text-sm mb-4">{{ Str::limit($event->description, 100) }}</p>
+
+                        <div class="space-y-2 text-sm text-on-surface-variant dark:text-slate-400 mb-4">
+                            <p><strong>Date:</strong> {{ $event->event_date?->format('M d, Y') ?? 'TBD' }}</p>
+                            <p><strong>Location:</strong> {{ $event->location ?: 'TBD' }}</p>
+                            <p><strong>Capacity:</strong> {{ $event->capacity }} participants</p>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-4 border-t border-outline-variant dark:border-slate-800">
+                            <span class="text-lg font-headline font-bold text-primary">{{ $event->price > 0 ? '$' . number_format($event->price, 2) : 'Free' }}</span>
+                            <button class="px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-semibold transition-colors">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-16">
+                    <p class="text-xl text-on-surface-variant dark:text-slate-400">No activities available at this time.</p>
+                </div>
+            @endforelse
+            <!-- Activity Card 1 -->
 <div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:scale-[1.02] transition-all duration-500">
 <div class="aspect-[4/5] relative overflow-hidden">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Hiker with heavy backpack ascending a steep rocky ridge under a dramatic cloudy sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQo4UjyinvZfH8POzbLC_uBaCj3C2fRt6XT1mTdDQEbF6tSILhbF9jHQnmHtH8S_1xjDp5LGGfMQzo-Lk83_DrTjGWUJXf_Kc2woLv3aNZDTucREygBFbSup_7MgcL666UzXqNBQ7WJpuHSgtRBll8HunKbk2KdhMWXhDpSxtgJY4NNRpAEpXBJDPnJi81RhQih3mK8tygXjYHi7L3puearh_CY3GslI31QPyEMxTlBTYqqIReXbsL8bUuNNX_s4X-eZPGuu1ebDc"/>
@@ -156,65 +183,15 @@ new class extends Component
 </div>
 </div>
 </div>
-<!-- Activity Card 2 -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:scale-[1.02] transition-all duration-500">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Solo traveler standing on a wooden pier overlooking a crystal clear turquoise lake surrounded by pine forests" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQn6gbpIe7EFjgSl7MJ3IunuMv6pB-CsaLtnNeqA1kBEBalJfcy-SsmMBK1JpXGvyw7Fur7KEfUIvgvm9S2H4T4bzPVDm3pF_iSCha9sPp6GNw94YKqBvGvp3SmVxfE9CE8CG8g3WH7hl6Ij6-mbFG_mfFQslqPkuwPvcCdl5gMwK1MI5t24hcRdARteD-7ZebKhfsvBRbbtdPaig_kQ3xQGY3qKxtQpqv4cO3N_xdxe0siVbZN8ffgy82YCNYngL6riqipSE7tGI"/>
-<div class="scrim-bottom absolute inset-0 flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div>
-<span class="text-primary text-[10px] font-black uppercase tracking-widest mb-1 block">Wilderness Trek</span>
-<h3 class="text-white text-2xl font-extrabold uppercase">Blackwood Basin</h3>
-</div>
-</div>
-</div>
-</div>
-<div class="p-6 grid grid-cols-3 gap-4 border-t border-outline-variant/30">
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Date</span>
-<span class="text-sm font-black">OCT 21</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Dist</span>
-<span class="text-sm font-black">18.2KM</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Diff</span>
-<span class="text-sm font-black text-primary">MOD</span>
-</div>
-</div>
-</div>
-<!-- Activity Card 3 -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:scale-[1.02] transition-all duration-500">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Snow covered mountain peaks under a clear blue sky with sunlight reflecting off ice" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClS6la4fBsqZor-1PNgLVf9bxn9yC8FJxKB9q8s9H93L7MXmoq2oMlHZ-Ng1XiVNmzJzV_KgvUAvesiT0Q1GjdUz-IajDqkXQuvgyy1nZv21vYLv8BW90Vv_TDO3T432b5765uJTima0bsMZb7IZoAorIW8wN_7F7xoEkreBrBfSa8zEpKt5inVMe_77A4RxGJDJ_kijNq_VGH60DNpLrVsotrQwsNX64zybOASIElFWu9EAhiorpMc-7g_n9iKKnbRu9y7zK0yFQ"/>
-<div class="scrim-bottom absolute inset-0 flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div>
-<span class="text-primary text-[10px] font-black uppercase tracking-widest mb-1 block">Alpine Vertical</span>
-<h3 class="text-white text-2xl font-extrabold uppercase">Glacier Pass</h3>
-</div>
-</div>
-</div>
-</div>
-<div class="p-6 grid grid-cols-3 gap-4 border-t border-outline-variant/30">
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Date</span>
-<span class="text-sm font-black">NOV 03</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Dist</span>
-<span class="text-sm font-black">9.5KM</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Diff</span>
-<span class="text-sm font-black text-primary">ELITE</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Stats Counter Section (Editorial Interlude) -->
+        </div>
+
+        @if($events->hasPages())
+            <div class="mt-12">
+                {{ $events->links() }}
+            </div>
+        @endif
+    </section>
+    <!-- Stats Counter Section (Editorial Interlude) -->
 <section class="bg-slate-900 py-24 mb-32">
 <div class="px-12 max-w-8xl mx-auto flex flex-wrap gap-12 md:gap-24">
 <div class="flex-1 min-w-[200px]">
@@ -273,6 +250,7 @@ new class extends Component
 </div>
 </div>
 </section>
+
 <!-- Newsletter CTA -->
 <section class="px-12 max-w-8xl mx-auto mb-32">
 <div class="bg-surface-container-high rounded-xl p-12 md:p-24 flex flex-col md:flex-row items-center gap-12 relative overflow-hidden">
@@ -291,6 +269,6 @@ new class extends Component
 </div>
 </div>
 </section>
-</main>
-</body></html>
 </div>
+</body>
+</html>
