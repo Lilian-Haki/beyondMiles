@@ -37,6 +37,10 @@ use Livewire\Component;
 <button class="px-6 py-2 rounded-lg bg-primary text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity">
                         DOWNLOAD APP
                     </button>
+                    <button class="px-6 py-2 rounded-lg bg-gray-200 text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity">
+                        <a href="/login" wire:navigate>LOGIN</a>
+                    </button>
+
 <button class="md:hidden text-slate-900 dark:text-slate-100">
 <span class="material-symbols-outlined">menu</span>
 </button>

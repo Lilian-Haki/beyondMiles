@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('members', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+         Schema::table('events', function (Blueprint $table) {
+        // $table->decimal('distance', 10, 2)->nullable();
+        $table->text('included')->nullable();
+        $table->text('requirements')->nullable();
+    });
     }
 
     /**
@@ -22,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('members');
+        Schema::table('events', function (Blueprint $table) {
+            //
+        });
     }
 };

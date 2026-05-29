@@ -27,7 +27,7 @@ new class extends Component
                 </p>
 <!-- <div class="flex flex-col sm:flex-row gap-4"> -->
 <button class="px-10 py-4 rounded-lg bg-primary text-slate-900 font-bold text-lg hover:scale-105 transition-transform">
-                        Start Your Adventure
+                        <a href="/activities" wire:navigate>Start Your Adventure</a>
                     </button>
 <!-- <button class="px-10 py-4 rounded-lg bg-white/20 backdrop-blur-md text-white border border-white/30 font-bold text-lg hover:bg-white/30 transition-all">
                         View Activities
@@ -48,28 +48,28 @@ new class extends Component
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Hikes -->
-<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
+<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer"><a href="/activities" wire:navigate>
 <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Misty mountain trails for professional hiking" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDoV8H57PlaSEvwTMU-ZAuvPSjzCHVy3lU4l15hPbMXNKZ0pPt2JfGYlGT-_cgGsxbD8MeUxYaDFm6UQCtggjILbqWRAnFWnYszZKJIRzG5OxUlVKiY19Hn9dZfo_iG-J0wm91PXm_H1jowtWnIydF_6rAcG9Qp5IUERmoC_fZ11YBweq5H6DpUMUt2lgxyHdP_jR6LYpyanoc9770URC9iTanXXFkOKOJfSSt_BCRn0DebIK8F5uulZQB0MrlfNAh0_fOpi1htzns");'></div>
 <div class="absolute bottom-0 p-8">
 <h3 class="text-2xl font-bold text-white mb-2">Hikes</h3>
 <p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">From coastal trails to alpine summits.</p>
-</div>
+</div></a>
 </div>
 <!-- Runs -->
-<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
+<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer"><a href="/activities" wire:navigate>
 <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Trail runner sprinting on a forest path" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUfb0hULwhgSrAZQXLTRM5_MGt-VfaVMmS-7Oz53H04SjIrmJbTTAGGyGRI8pxrUSUOdz7h90QMfGpqxAV6QYHDePEkG261M9ByOWvbsoo_OIEH5RR271kTavZvl5HfoGVU_PE_LRBFJ244N6-jLKymC2bdejf2za05vy3qMtkN53Lp7VGcrfcY4o9Y2m4wASjx_7aliyTyGsnOiEmauYaWRJwHTq4q-aFYH4IkZ9U3G_pDaoByJTzywoAWgBX9bJ4oZ8ItLSuGSk");'></div>
 <div class="absolute bottom-0 p-8">
 <h3 class="text-2xl font-bold text-white mb-2">Runs</h3>
 <p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Endurance trail running events and training.</p>
-</div>
+</div></a>
 </div>
 <!-- Walks -->
-<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer">
+<div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer"><a href="/activities" wire:navigate>
 <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Peaceful sunlit path through ancient woods" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBU-YZP_il8FnLUnQ5H-Y7snasER6HXmE3EyfiYFDAuQmZBJpmLAdiqhhV-0UnRdJHXbGWrgdKjv-mMXUU_g_TJEsv3ETaGXn1pCwXIxUe56f8vKtoKVKfM1US_l0B460MpcgXWRz4QlQvKk4J84CQZDWzeAECGzG6_1Ynpmhv9s4aV_aLKqWLeAziqYkW3NgSkXEMzkZTCvnbLfC42xg3AJvpfSCuMdT4rwVpSdGw8kE0RFP-iubIA6_YRcD77sIglK-2xtmE07B0");'></div>
 <div class="absolute bottom-0 p-8">
 <h3 class="text-2xl font-bold text-white mb-2">Walks</h3>
 <p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Guided nature walks and mindful exploration.</p>
-</div>
+</div></a>
 </div>
 </div>
 </section>   

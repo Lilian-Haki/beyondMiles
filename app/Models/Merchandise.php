@@ -10,11 +10,14 @@ class Merchandise extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'image',
         'name',
         'description',
         'category',
         'price',
         'image',
+        'colors',
+        'sizes',
         'stock_quantity',
         'is_active',
     ];
