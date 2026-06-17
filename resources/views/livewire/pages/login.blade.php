@@ -92,49 +92,15 @@ new class extends Component
             },
         }
     </script>
-<style>
-        body { font-family: 'Lexend', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .scrim-overlay {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
-        }
-        input:focus {
-            box-shadow: none !important;
-            border-color: #f48c25 !important;
-        }
-    </style>
 </head>
-<body class="bg-surface text-on-surface min-h-screen">
+<body class="bg-surface text-on-surface min-h-screen" style="font-family: 'Lexend', sans-serif;">
 <!-- TopAppBar Suppressed for Transactional Page as per Shell Visibility Rules -->
-<main class="grid grid-cols-1 md:grid-cols-2 h-screen w-full">
-<!-- Left Side: High-Impact Mountain Expedition Image -->
-<section class="hidden md:block relative overflow-hidden group">
-<img alt="High-altitude mountain expedition" class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105" data-alt="A breathtaking high-altitude mountain landscape featuring sharp, snow-capped peaks under a crisp, azure sky. A solitary explorer in high-visibility orange gear is seen in the far distance, traversing a rugged ridge line. The lighting is harsh and dramatic, emphasizing the raw, unyielding texture of the rock and ice. The overall aesthetic is professional, rugged, and adventurous, utilizing the Horizon Ember signature orange as a stark focal point against the cool tones of the alpine environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc55vupSJMwZyCntgS0UR8edXngFcpp5jxVsY4f0N_A6BDf9x8Yp_iWRcUbQsYiioOCNrVXGREt9eaFEj70AYNVs4ThR39ULumX1LRr3XGel258Phk07nT7bvV84lBFkheAPJVMDL6Qw-Az--rbOlnc8yWnPvLS5CSirJ3EWxFYHIlRcNWZX-0p_n25Dh2GfRmZPdayTYdXinWz7NKZuHdLsFPeRwK1_uLDqKrNpYIPkuSzmj_cWSqc4cAC-mA1iHYFU08J7qDk5o"/>
-<div class="absolute inset-0 scrim-overlay flex flex-col justify-end p-16">
-<div class="space-y-4 max-w-xl">
-<span class="inline-block px-3 py-1 bg-primary text-on-primary text-[0.75rem] font-bold tracking-wider uppercase rounded-lg">
-                        Beyond Miles Expedition
-                    </span>
-<h1 class="text-5xl lg:text-7xl font-black text-white leading-none tracking-tighter">
-                        CHASE THE <br/>HORIZON.
-                    </h1>
-<p class="text-white/80 font-light text-lg leading-relaxed max-w-md">
-                        Your journey doesn't end where the pavement does. Gear up for the most demanding terrain on the planet.
-                    </p>
-</div>
-</div>
-<!-- Branding Logo Overlay -->
-<div class="absolute top-12 left-12">
-<span class="text-2xl font-black tracking-tighter text-white">
-                    Beyond Miles
-                </span>
-</div>
-</section>
-<!-- Right Side: Minimalist Login Form -->
+<main class="grid grid-cols-1 h-screen w-full">
+<!-- Minimalist Login Form -->
 <section class="flex items-center justify-center p-8 md:p-16 lg:p-24 bg-surface-container-low">
-<div class="w-full max-w-md space-y-12">
+<div class="bg-gray-200 w-[40%] space-y-12 rounded-md shadow-sm p-10">
+<!-- <div class=" w-[40%] grid grid-cols-1 gap-0 overflow-hidden "> -->
+
 <!-- Form Header -->
 <div class="space-y-4">
 <h2 class="text-3xl font-extrabold text-on-surface leading-tight">Welcome back, Explorer</h2>
@@ -145,14 +111,14 @@ new class extends Component
 <div class="space-y-4">
 <div class="relative group">
 <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1 ml-1" for="email">Email Address</label>
-<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary transition-all duration-200" id="email" placeholder="enter your email address" type="email"/>
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary transition-all duration-200" id="email" onblur="this.style.boxShadow='none'; this.style.borderColor='';" onfocus="this.style.boxShadow='none'; this.style.borderColor='#f48c25';" placeholder="enter your email address" type="email"/>
 </div>
 <div class="relative group">
 <div class="flex justify-between items-end mb-1">
 <label class="block text-xs font-bold uppercase tracking-widest text-on-surface-variant ml-1" for="password">Password</label>
 <a class="text-xs font-bold text-primary hover:underline transition-all" href="#">Forgot password?</a>
 </div>
-<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary transition-all duration-200" id="password" placeholder="••••••••" type="password"/>
+<input class="w-full px-4 py-4 bg-surface-container-highest border-none rounded-xl text-on-surface focus:ring-2 focus:ring-primary transition-all duration-200" id="password" onblur="this.style.boxShadow='none'; this.style.borderColor='';" onfocus="this.style.boxShadow='none'; this.style.borderColor='#f48c25';" placeholder="••••••••" type="password"/>
 </div>
 </div>
 <div class="flex items-center space-x-3 py-2">
@@ -161,7 +127,7 @@ new class extends Component
 </div>
 <button class="w-full py-4 bg-primary text-on-primary font-bold text-lg rounded-xl shadow-sm hover:shadow-md active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-2">
 <span>Sign In</span>
-<span class="material-symbols-outlined text-xl">north_east</span>
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">north_east</span>
 </button>
 </form>
 <!-- Divider -->
@@ -207,23 +173,6 @@ new class extends Component
             input.addEventListener('blur', () => {
                 input.parentElement.querySelector('label')?.classList.remove('text-primary');
             });
-        });
-
-        // Atmospheric effect: Subtle mouse-parallax on the hero side
-        const heroSection = document.querySelector('section:first-child');
-        const heroImage = heroSection.querySelector('img');
-        
-        heroSection.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            const moveX = (clientX - innerWidth / 4) / 40;
-            const moveY = (clientY - innerHeight / 2) / 40;
-            
-            heroImage.style.transform = `scale(1.05) translate(${moveX}px, ${moveY}px)`;
-        });
-
-        heroSection.addEventListener('mouseleave', () => {
-            heroImage.style.transform = `scale(1) translate(0px, 0px)`;
         });
     </script>
 </body></html>

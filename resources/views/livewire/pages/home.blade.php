@@ -74,54 +74,97 @@ new class extends Component
 </div>
 </section>   
 
-    <!-- Featured Merchandise -->
-    <div class="bg-surface-container-low dark:bg-surface-container-high">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-headline font-bold text-on-background dark:text-inverse-on-surface mb-4">Premium Gear</h2>
-                <p class="text-lg text-on-surface-variant">Equip yourself with the best adventure gear</p>
-            </div>
-
-            @if($featuredMerchandise->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach($featuredMerchandise as $item)
-<div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm  border-slate-200 dark:border-slate-800 flex flex-col">
-<div class=" bg-slate-200 overflow-hidden">
-<img alt="Smart Watch" class="w-full h-full object-cover" data-alt="White minimalist adventure smartwatch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcr8JZSLI_TAem5Sbsr-1KwuTsU2sSGs271oCTExz_XaE_Q8p9LmgRVqVM07oaa8Wt_cfUqAGOWKLlfOr0h3D7m6qGal5PpvHfI99_MgjGpyy4Q3NWBJ0A5sIemoC0EjuSeuFCGdKMJtSkGzm8T-uut2379W36UtIR_eNQbwc5SuOelMhIuj4c2tdSahF2e5DVH69cpBRdT9EM1FfAKkNCzAwqSVjIJizIBvh10BojtIAyqqPnIXKRd8CXF6HRIPeS13mzJrs4yVo"/>
- @if($item->image)
-                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
-                                @else
-                                    <div class="w-full h-full bg-gradient-to-br from-secondary to-secondary-container flex items-center justify-center">
-                                        <svg class="w-12 h-12 text-on-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                        </svg>
-                                    </div>
-                                @endif
-</div>
-<div class="p-6">
-<span class="text-xs font-bold text-primary uppercase tracking-wider">{{ ucfirst($item->category) }}</span>
-<h4 class="text-lg font-bold mt-1">{{ $item->name }}</h4>
-<p class="text-slate-500 dark:text-slate-400 text-sm mt-2">{{ $item->description }}</p>
-<div class="flex items-end justify-between pt-4 border-t border-outline-variant dark:border-slate-800 mt-auto">
-                            <div>
-                                <p class="text-2xl font-headline font-bold text-primary">KES {{ number_format($item->price, 2) }}</p>
-                                <p class="text-xs text-on-surface-variant dark:text-slate-400">{{ $item->stock_quantity > 0 ? $item->stock_quantity . ' in stock' : 'Out of stock' }}</p>
-                            </div>
-                            <button class="p-2 rounded-lg {{ $item->stock > 0 ? 'bg-primary text-on-primary hover:bg-primary-fixed-dim' : 'bg-surface-container-high text-on-surface-variant cursor-not-allowed' }} transition-colors" {{ $item->stock <= 0 ? 'disabled' : '' }}>
-                                <span class="material-symbols-outlined text-base">shopping_cart</span>
-                            </button>
-                        </div>
-</div>
-</div>
-                    @endforeach
-                </div>
-            @else
-                <div class="text-center py-16">
-                    <p class="text-xl text-on-surface-variant">No featured merchandise available at this time.</p>
-                </div>
-            @endif
+  <!-- Featured Merchandise -->
+<div class="bg-surface-container-low dark:bg-surface-container-high">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-headline font-bold text-on-background dark:text-inverse-on-surface mb-4">Premium Gear</h2>
+            <p class="text-lg text-on-surface-variant">Equip yourself with the best adventure gear</p>
         </div>
+
+        @if($featuredMerchandise->count() > 0)
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($featuredMerchandise as $item)
+            <div class="bg-white dark:bg-background-dark rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col">
+
+                {{-- PRODUCT IMAGE --}}
+                <div class="h-56 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    @if($item->image)
+                        <img
+                            src="{{ asset('storage/' . $item->image) }}"
+                            alt="{{ $item->name }}"
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        >
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-secondary to-secondary-container flex items-center justify-center">
+                            <svg class="w-12 h-12 text-on-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- PRODUCT DETAILS --}}
+                <div class="p-6 flex flex-col flex-1">
+                    <span class="text-xs font-bold text-primary uppercase tracking-wider">{{ ucfirst($item->category) }}</span>
+                    <h4 class="text-lg font-bold mt-1 text-on-surface dark:text-white">{{ $item->name }}</h4>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-2 flex-1">{{ $item->description }}</p>
+
+                    <div class="flex items-end justify-between pt-4 border-t border-outline-variant dark:border-slate-700 mt-4">
+                        <div>
+                            <p class="text-2xl font-headline font-bold text-primary">KES {{ number_format($item->price, 2) }}</p>
+                            <p class="text-xs text-on-surface-variant dark:text-slate-400">
+                                {{ $item->stock_quantity > 0 ? $item->stock_quantity . ' in stock' : 'Out of stock' }}
+                            </p>
+                        </div>
+
+                        {{-- ADD TO CART BUTTON --}}
+                        @if($item->stock_quantity > 0)
+                        
+                            <form action="{{ route('cart.add') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="merchandise_id" value="{{ $item->id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button
+                                    type="submit"
+                                    class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-colors text-sm font-medium"
+                                >
+                                    <span class="material-symbols-outlined text-base">shopping_cart</span>
+                                    Add to Cart
+                                </button>
+                            </form>
+                        @else
+                            <button
+                                disabled
+                                class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface-variant cursor-not-allowed text-sm font-medium"
+                            >
+                                <span class="material-symbols-outlined text-base">remove_shopping_cart</span>
+                                Out of Stock
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        {{-- CART / CHECKOUT CTA --}}
+        <!-- <div class="mt-10 text-center"      
+                href="{{ route('cart.index') }}"
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-colors font-semibold text-base"
+            >
+                <span class="material-symbols-outlined">shopping_bag</span>
+                View Cart & Checkout
+            </a>
+        </div> -->
+
+        @else
+        <div class="text-center py-16">
+            <p class="text-xl text-on-surface-variant">No featured merchandise available at this time.</p>
+        </div>
+        @endif
     </div>
+</div>
 
     <!-- Community Section -->
 <section class="py-24 px-6 lg:px-10 max-w-7xl mx-auto w-full">

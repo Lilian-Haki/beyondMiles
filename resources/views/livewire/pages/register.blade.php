@@ -91,31 +91,12 @@ new class extends Component
         },
       }
     </script>
-<style>
-        body { font-family: 'Lexend', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .scrim-overlay {
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.7) 100%);
-        }
-    </style>
 </head>
-<body class="bg-surface text-on-surface min-h-screen flex flex-col">
-<main class="flex-grow flex items-center justify-center sm:px-6">
-<div class=" w-full grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden bg-surface-container-lowest">
-<!-- Visual Brand Side (Rugged Editorial) -->
-<div class="relative hidden lg:flex flex-col justify-end p-12 overflow-hidden bg-slate-900">
-<img class="absolute inset-0 w-full h-full object-cover opacity-80" data-alt="A rugged landscape featuring a lone hiker standing on a rocky outcrop during the golden hour of a desert sunset. The warm orange light hits the jagged terrain, creating long dramatic shadows and a high-contrast atmosphere. The shot is framed like a professional outdoor editorial, capturing a sense of vast exploration and rugged high-performance gear. The lighting is rich and cinematic, perfectly aligning with the Horizon Ember design system's adventurous spirit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqZxHhjhQXChB5-8IKDbdNfN9K1uuyBWjBG9whY61CccMU2s-9Ys1YzXXqKu7Kvj26DrxtAKOaJxWLxpJtAX7fBTe5lLSVlnWvrfgc-x8UgMChRHqDvhclwY7h7L0x8HkgOMs3mPzPCVO0UhHGZ5hxaSLQux4H81H1bpLvqX6aGO1mR5Kef6oICuR9uIhhtYac72aRSdks3szuV54kXH33VsTy-Mt71sEDd0IYJW9E11CAgnn84HDhdJ2HqQmHexEJUH5--1l5KWU"/>
-<div class="absolute inset-0 scrim-overlay"></div>
-<div class="relative z-10 space-y-4">
-<span class="inline-block px-3 py-1 bg-primary text-on-primary text-[10px] font-black uppercase tracking-widest rounded-sm">Essential Equipment</span>
-<h2 class="text-4xl md:text-5xl font-black text-white leading-tight tracking-tighter">Beyond the <span class="text-primary">Unknown.</span></h2>
-<p class="text-slate-300 font-light max-w-sm">Join a community of elite explorers pushing the boundaries of what's possible in the great outdoors.</p>
-</div>
-</div>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col" style="font-family: 'Lexend', sans-serif;">
+<main class="grow flex items-center justify-center sm:px-6 p-14">
+<div class=" w-[40%] grid grid-cols-1 gap-0 overflow-hidden bg-gray-200 rounded-md shadow-sm">
 <!-- Registration Form Side -->
-<div class="p-8 md:p-16 flex flex-col justify-center">
+<div class="p-28 md:p-16 flex flex-col justify-center">
 <div class="mb-10">
 <h1 class="text-3xl font-extrabold tracking-tighter text-on-surface mb-2">Join the Expedition</h1>
 <p class="text-on-surface-variant font-light">Start your journey with Beyond Miles</p>
@@ -123,30 +104,18 @@ new class extends Component
 <form class="space-y-6" onsubmit="return false;">
 <div class="space-y-1">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1" for="full_name">Full Name</label>
-<input class="w-full px-4 py-4 bg-surface-container border-none focus:ring-2 focus:ring-primary rounded-lg transition-all text-on-surface placeholder:text-slate-400" id="full_name" placeholder="Johnathan Miller" type="text"/>
+<input class="w-full px-4 py-4 bg-surface-container border-none focus:ring-2 focus:ring-primary rounded-lg transition-all text-on-surface placeholder:text-slate-400" id="full_name" placeholder="Enter your full names" type="text"/>
 </div>
 <div class="space-y-1">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1" for="email">Email Address</label>
-<input class="w-full px-4 py-4 bg-surface-container border-none focus:ring-2 focus:ring-primary rounded-lg transition-all text-on-surface placeholder:text-slate-400" id="email" placeholder="explorer@beyondmiles.com" type="email"/>
+<input class="w-full px-4 py-4 bg-surface-container border-none focus:ring-2 focus:ring-primary rounded-lg transition-all text-on-surface placeholder:text-slate-400" id="email" placeholder="Enter your email address" type="email"/>
 </div>
 <div class="space-y-1 relative">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant px-1" for="password">Password</label>
 <input class="w-full px-4 py-4 bg-surface-container border-none focus:ring-2 focus:ring-primary rounded-lg transition-all text-on-surface placeholder:text-slate-400" id="password" placeholder="••••••••••••" type="password"/>
 <button class="absolute right-4 bottom-4 text-on-surface-variant hover:text-primary transition-colors" type="button">
-<span class="material-symbols-outlined text-xl">visibility</span>
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">visibility</span>
 </button>
-</div>
-<div class="flex items-center space-x-3 p-4 bg-surface-container-low rounded-lg border border-outline-variant/50">
-<div class="flex items-center h-5">
-<input class="h-5 w-5 rounded border-outline bg-surface focus:ring-primary text-primary transition-all" id="newsletter" name="newsletter" type="checkbox"/>
-</div>
-<div class="text-sm">
-<label class="font-bold text-on-surface flex items-center gap-2" for="newsletter">
-                                Join the Dispatch
-                                <span class="bg-tertiary-container/20 text-tertiary text-[9px] px-2 py-0.5 rounded uppercase tracking-tighter">Recommended</span>
-</label>
-<p class="text-on-surface-variant font-light text-xs">Receive gear field tests and expedition invites weekly.</p>
-</div>
 </div>
 <button class="w-full py-5 bg-primary text-on-primary font-black uppercase tracking-widest rounded-lg shadow-sm hover:brightness-110 active:scale-[0.98] transition-all duration-200" type="submit">
                         Create Account
@@ -159,9 +128,9 @@ new class extends Component
 </p>
 </div>
 <div class="mt-12 pt-8 border-t border-outline-variant flex justify-center space-x-6 grayscale opacity-50">
-<span class="material-symbols-outlined text-3xl">landscape</span>
-<span class="material-symbols-outlined text-3xl">hiking</span>
-<span class="material-symbols-outlined text-3xl">terrain</span>
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">landscape</span>
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">hiking</span>
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;">terrain</span>
 </div>
 </div>
 </div>
