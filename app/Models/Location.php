@@ -17,6 +17,10 @@ class Location extends Model
         'longitude',
         'type',
         'is_active',
+        'image',
+        'directions',
+        'training_hours',
+        'training_days',
     ];
 
     protected $casts = [

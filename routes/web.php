@@ -9,6 +9,7 @@ Route::livewire('/shop', \App\Livewire\Shop::class)->name('shop');
 Route::livewire('/activities', \App\Livewire\Activities::class)->name('activities');
 Route::livewire('/login', \App\Livewire\Login::class)->name('login');
 Route::livewire('/register', \App\Livewire\Register::class)->name('register');
+Route::livewire('/terms', \App\Livewire\Terms::class)->name('terms');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');

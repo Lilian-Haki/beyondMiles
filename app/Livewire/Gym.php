@@ -10,6 +10,10 @@ class Gym extends Component
     public function render()
     {
         return view('livewire.pages.gym', [
+            'primaryLocation' => Location::query()
+                ->where('is_active', true)
+                ->orderByDesc('created_at')
+                ->first(),
             'locations' => Location::query()
                 ->where('is_active', true)
                 ->orderByDesc('created_at')

@@ -29,6 +29,25 @@ class LocationForm
                             ->label('Street Address')
                             ->placeholder('e.g., 123 Main St, City, State')
                             ->maxLength(255),
+                        FormComponents\Textarea::make('directions')
+                            ->label('Directions')
+                            ->placeholder('Provide nearby landmarks, transit access, and parking details')
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                        FormComponents\TextInput::make('training_hours')
+                            ->label('Training Hours')
+                            ->placeholder('e.g., Mon - Fri: 05:00 - 22:00')
+                            ->maxLength(255),
+                        FormComponents\TextInput::make('training_days')
+                            ->label('Training Days')
+                            ->placeholder('e.g., Mon - Sun')
+                            ->maxLength(255),
+                        FormComponents\FileUpload::make('image')
+                            ->label('Location Image')
+                            ->image()
+                            ->disk('public')
+                            ->directory('locations')
+                            ->columnSpanFull(),
                         FormComponents\TextInput::make('latitude')
                             ->label('Latitude')
                             ->numeric()

@@ -120,8 +120,8 @@ new class extends Component
 </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse($events as $event)
-                <div class="rounded-xl overflow-hidden border border-outline-variant dark:border-slate-800 shadow-sm hover:shadow-lg transition-shadow duration-300 bg-surface-container-low dark:bg-surface-container-high">
+            @forelse($upcomingEvents as $event)
+                <div class="rounded-xl overflow-hidden border border-outline-variant! dark:border-slate-800! shadow-sm hover:shadow-lg transition-shadow duration-300 bg-surface-container-low dark:bg-surface-container-high">
                     <div class="h-48 bg-surface-container-high overflow-hidden">
                         <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80' }}"
                              alt="{{ $event->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
@@ -142,52 +142,28 @@ new class extends Component
                             <p><strong>Capacity:</strong> {{ $event->capacity }} participants</p>
                         </div>
 
-                        <div class="flex items-center justify-between pt-4 border-t border-outline-variant dark:border-slate-800">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-outline-variant dark:border-slate-800">
                             <span class="text-lg font-headline font-bold text-primary">{{ $event->price > 0 ? '$' . number_format($event->price, 2) : 'Free' }}</span>
-                            <button class="px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-semibold transition-colors">
-                                Book Now
-                            </button>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="tel:+254757151520" class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim font-semibold transition-colors"><i class="material-symbols-outlined ml-2">phone</i></a>
+                                <a href="sms:+254757151520?body=I%27m%20interested%20in%20booking%20{{ urlencode($event->name) }}" class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-low transition-colors"><i class="material-symbols-outlined ml-2">message</i></a>
+                                <a href="https://wa.me/+254757151520?text={{ urlencode('Hi, I am interested in booking ' . $event->name) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-4 py-2 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48">
+<path fill="#fff" d="M4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98c-0.001,0,0,0,0,0h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303z"></path><path fill="#fff" d="M4.868,43.803c-0.132,0-0.26-0.052-0.355-0.148c-0.125-0.127-0.174-0.312-0.127-0.483l2.639-9.636c-1.636-2.906-2.499-6.206-2.497-9.556C4.532,13.238,13.273,4.5,24.014,4.5c5.21,0.002,10.105,2.031,13.784,5.713c3.679,3.683,5.704,8.577,5.702,13.781c-0.004,10.741-8.746,19.48-19.486,19.48c-3.189-0.001-6.344-0.788-9.144-2.277l-9.875,2.589C4.953,43.798,4.911,43.803,4.868,43.803z"></path><path fill="#cfd8dc" d="M24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,4C24.014,4,24.014,4,24.014,4C12.998,4,4.032,12.962,4.027,23.979c-0.001,3.367,0.849,6.685,2.461,9.622l-2.585,9.439c-0.094,0.345,0.002,0.713,0.254,0.967c0.19,0.192,0.447,0.297,0.711,0.297c0.085,0,0.17-0.011,0.254-0.033l9.687-2.54c2.828,1.468,5.998,2.243,9.197,2.244c11.024,0,19.99-8.963,19.995-19.98c0.002-5.339-2.075-10.359-5.848-14.135C34.378,6.083,29.357,4.002,24.014,4L24.014,4z"></path><path fill="#40c351" d="M35.176,12.832c-2.98-2.982-6.941-4.625-11.157-4.626c-8.704,0-15.783,7.076-15.787,15.774c-0.001,2.981,0.833,5.883,2.413,8.396l0.376,0.597l-1.595,5.821l5.973-1.566l0.577,0.342c2.422,1.438,5.2,2.198,8.032,2.199h0.006c8.698,0,15.777-7.077,15.78-15.776C39.795,19.778,38.156,15.814,35.176,12.832z"></path><path fill="#fff" fill-rule="evenodd" d="M19.268,16.045c-0.355-0.79-0.729-0.806-1.068-0.82c-0.277-0.012-0.593-0.011-0.909-0.011c-0.316,0-0.83,0.119-1.265,0.594c-0.435,0.475-1.661,1.622-1.661,3.956c0,2.334,1.7,4.59,1.937,4.906c0.237,0.316,3.282,5.259,8.104,7.161c4.007,1.58,4.823,1.266,5.693,1.187c0.87-0.079,2.807-1.147,3.202-2.255c0.395-1.108,0.395-2.057,0.277-2.255c-0.119-0.198-0.435-0.316-0.909-0.554s-2.807-1.385-3.242-1.543c-0.435-0.158-0.751-0.237-1.068,0.238c-0.316,0.474-1.225,1.543-1.502,1.859c-0.277,0.317-0.554,0.357-1.028,0.119c-0.474-0.238-2.002-0.738-3.815-2.354c-1.41-1.257-2.362-2.81-2.639-3.285c-0.277-0.474-0.03-0.731,0.208-0.968c0.213-0.213,0.474-0.554,0.712-0.831c0.237-0.277,0.316-0.475,0.474-0.791c0.158-0.317,0.079-0.594-0.04-0.831C20.612,19.329,19.69,16.983,19.268,16.045z" clip-rule="evenodd"></path>
+</svg></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             @empty
                 <div class="col-span-full text-center py-16">
-                    <p class="text-xl text-on-surface-variant dark:text-slate-400">No activities available at this time.</p>
+                    <p class="text-xl text-on-surface-variant dark:text-slate-400">No upcoming activities available at this time.</p>
                 </div>
             @endforelse
-            <!-- Activity Card 1 -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm hover:scale-[1.02] transition-all duration-500">
-<div class="aspect-[4/5] relative overflow-hidden">
-<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Hiker with heavy backpack ascending a steep rocky ridge under a dramatic cloudy sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQo4UjyinvZfH8POzbLC_uBaCj3C2fRt6XT1mTdDQEbF6tSILhbF9jHQnmHtH8S_1xjDp5LGGfMQzo-Lk83_DrTjGWUJXf_Kc2woLv3aNZDTucREygBFbSup_7MgcL666UzXqNBQ7WJpuHSgtRBll8HunKbk2KdhMWXhDpSxtgJY4NNRpAEpXBJDPnJi81RhQih3mK8tygXjYHi7L3puearh_CY3GslI31QPyEMxTlBTYqqIReXbsL8bUuNNX_s4X-eZPGuu1ebDc"/>
-<div class="scrim-bottom absolute inset-0 flex flex-col justify-end p-6">
-<div class="flex justify-between items-end">
-<div>
-<span class="text-primary text-[10px] font-black uppercase tracking-widest mb-1 block">Summit Pursuit</span>
-<h3 class="text-white text-2xl font-extrabold uppercase">Echo Ridge Ascent</h3>
-</div>
-</div>
-</div>
-</div>
-<div class="p-6 grid grid-cols-3 gap-4 border-t border-outline-variant/30">
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Date</span>
-<span class="text-sm font-black">OCT 14</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Dist</span>
-<span class="text-sm font-black">12.4KM</span>
-</div>
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Diff</span>
-<span class="text-sm font-black text-primary">HARD</span>
-</div>
-</div>
-</div>
         </div>
 
-        @if($events->hasPages())
+        @if($upcomingEvents->hasPages())
             <div class="mt-12">
-                {{ $events->links() }}
+                {{ $upcomingEvents->links() }}
             </div>
         @endif
     </section>
@@ -218,36 +194,37 @@ new class extends Component
 <h2 class="text-4xl font-black uppercase tracking-tight text-on-surface">Past Adventures</h2>
 <p class="text-on-surface-variant mt-2 max-w-xl">A visual archive of the landscapes we've explored and the challenges we've overcome together.</p>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 h-[1000px] md:h-[700px]">
-<div class="md:col-span-2 md:row-span-2 relative overflow-hidden group rounded-xl">
-<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Person standing on a high cliff edge looking out over a vast forest valley with distant mountains" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQE4LYo9RTzpDX-Ywwk4mjzoDsCkltbwZMEG-wOMMisqWSJaO_Zz78uclmqp7QLNduiV_AgOslrx-I-0xZhiFfaBxamYQkwdBypcpyYi_s6yK87dCF0ziQlq0ficmO88uFJEfwe7lXu0cYzgL6xpS3yEJG2qePienNng5uxywWMe7hyCAJqQ1sU-2tfGdaJeCuCEx_vQl0CLIXSIQqLO9hsitFSsoZCZOpzUswaKP5PVzt7gcrMSEdYj0gKKNxcbfn_8K2V-z3fpA"/>
-<div class="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/10 transition-colors"></div>
-<div class="absolute bottom-8 left-8">
-<span class="bg-white px-3 py-1 text-[10px] font-black uppercase mb-3 inline-block">EXPEDITION 001</span>
-<h4 class="text-white text-3xl font-black uppercase">Copper Canyon</h4>
-</div>
-</div>
-<div class="md:col-span-1 relative overflow-hidden group rounded-xl">
-<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Detail shot of weathered leather hiking boots on a dusty desert trail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4kA4kmVZlijn-3YzskcJGPI-4FLM59aNPMHAmBKZY4Xp_loTLVFYAXTEdDlOxzV2IfBxZYde4Nd7OGvGJTpWJI_jUbsSuWG3fHXQjBNM5Ci5k6VBJSUyVVCthYJwXhWeLV4dCaQBTv8A1ifZvdCiPMkUn9teTgyetf0ScDAMZN--7V4PDRevzUyFDKUFjPFR0MJvlwx9qnxXXuOMQA2ZBxtgdysQ_XDxPJ825qcOpeBC41bF7YrffptlRyBeOFeUXDTXr0NtNXWU"/>
-<div class="absolute inset-0 bg-slate-900/20"></div>
-<div class="absolute top-6 left-6 right-6">
-<h4 class="text-white text-lg font-black uppercase leading-tight">Dust &amp; Granite</h4>
-</div>
-</div>
-<div class="md:col-span-1 md:row-span-2 relative overflow-hidden group rounded-xl">
-<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Campsite with small tent at the foot of massive snowy peaks under a starry night sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8MKtd_KeOyaXEfDpEnp0eHe2jI1yeCXdbaZQacWC02a1Y2nQdghOvdOu0Ki5__HOJ7hnUPIWYP9AVhnQ63Nsvrhjf3XeYC7OS8FC40retYR5lw21sRaiXpYtUP_adx-h9uh6bdjsB7pcBcLUF9As4WHl83l5hIBzKbu4cdk6_QeW4nqLRmuHUmzRE0pudIHc4lzeFyFxEfH8ngktvaBb8Am7DiAKCnnK-uRP2WmUaDE3oKMJqJDkwlS0InBo5AUioNxs1DLiv4Es"/>
-<div class="absolute inset-0 bg-slate-900/30"></div>
-<div class="absolute bottom-6 left-6">
-<h4 class="text-white text-xl font-black uppercase">Star-Lit Base</h4>
-</div>
-</div>
-<div class="md:col-span-1 relative overflow-hidden group rounded-xl">
-<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Rushing mountain stream with crystal clear water flowing over smooth dark river stones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChlJb7sGLplY5KGRcKmc8rsL-ZH88yz6UTFR9vpt1i0A4kpj0FRe4jBFzmbHZ-55XqwOeemI6YTh8D2vzGrOSLqhkfq_LJtkLYzO59LASQGgv8a1H7IDDJbIr2H7eoZpdXnvnkSIWznLOUp_RDep7fvM9acN0RIGMJeyc_wENxWGa4tlaGeMT-JLzBrpPg03Ao5yxwwI6PMBEwfNRnVfE0vn3aht8LOuqgpOoyVetGc7A-PW_G0Ppb0Jopz19nCtb03wjdq_VGypk"/>
-<div class="absolute inset-0 bg-slate-900/20"></div>
-<div class="absolute top-6 left-6">
-<h4 class="text-white text-lg font-black uppercase">Pure Current</h4>
-</div>
-</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    @forelse($pastEvents as $event)
+        <div class="group relative rounded-xl overflow-hidden border! border-outline-variant! dark:border-slate-800! shadow-sm! hover:shadow-lg! transition-shadow duration-300 bg-surface-container-lowest">
+            <div class="aspect-[4/5] overflow-hidden bg-surface-container-high">
+                <img src="{{ $event->image ? asset('storage/' . $event->image) : 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80' }}"
+                     alt="{{ $event->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"/>
+            </div>
+            <div class="p-6 bg-surface dark:bg-surface-container">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[10px] font-bold uppercase tracking-wider">{{ ucfirst($event->status) }}</span>
+                    <span class="text-xs font-label font-semibold text-on-surface-variant">{{ $event->event_date?->format('M d, Y') ?? 'TBD' }}</span>
+                </div>
+                <h3 class="text-xl font-headline font-bold mb-2 text-on-surface dark:text-on-background">{{ $event->name }}</h3>
+                <p class="text-sm text-on-surface-variant dark:text-slate-400 mb-4">{{ Str::limit($event->description, 80) }}</p>
+                <div class="grid grid-cols-2 gap-4 text-[13px] text-on-surface-variant dark:text-slate-400">
+                    <div>
+                        <p class="font-semibold text-on-surface">Location</p>
+                        <p>{{ $event->location ?: 'TBD' }}</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-on-surface">Capacity</p>
+                        <p>{{ $event->capacity }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+        <div class="col-span-full text-center py-16">
+            <p class="text-xl text-on-surface-variant dark:text-slate-400">No past adventures have been recorded yet.</p>
+        </div>
+    @endforelse
 </div>
 </section>
 
@@ -259,11 +236,11 @@ new class extends Component
 </div>
 <div class="flex-1 relative z-10">
 <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6">Join the Dispatch</h2>
-<p class="text-on-surface-variant max-w-md">Get exclusive early access to expedition bookings, gear reviews, and survival guides delivered twice a month.</p>
+<p class="text-on-surface-variant max-w-md">Get exclusive early access to expedition bookings and upcoming events.</p>
 </div>
 <div class="w-full md:w-auto relative z-10">
 <form class="flex flex-col md:flex-row gap-4">
-<input class="bg-surface-bright border-none px-6 py-4 rounded-lg focus:ring-2 focus:ring-primary w-full md:w-80 font-bold uppercase text-xs tracking-widest" placeholder="Your rugged email" type="email"/>
+<input class="bg-surface-bright border-none px-6 py-4 rounded-lg focus:ring-2 focus:ring-primary w-full md:w-80 font-bold uppercase text-xs tracking-widest" placeholder="Your email" type="email"/>
 <button class="bg-primary text-on-primary font-black uppercase text-xs tracking-[0.2em] px-10 py-4 rounded-lg hover:bg-slate-900 hover:text-white transition-all">Enlist</button>
 </form>
 </div>

@@ -10,9 +10,14 @@ class Activities extends Component
     public function render()
     {
         return view('livewire.pages.activities', [
-            'events' => Event::query()
+            'upcomingEvents' => Event::query()
+                ->where('status', 'upcoming')
                 ->orderByDesc('created_at')
                 ->paginate(12),
+            'pastEvents' => Event::query()
+                ->whereIn('status', ['past', 'complete'])
+                ->orderByDesc('event_date')
+                ->get(),
         ]);
     }
 }

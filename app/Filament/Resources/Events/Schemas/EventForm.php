@@ -60,6 +60,7 @@ class EventForm
                         FormComponents\FileUpload::make('image')
                             ->label('Event Image')
                             ->image()
+                            ->disk('public')
                             ->directory('events')
                             ->columnSpanFull(),
                     ])

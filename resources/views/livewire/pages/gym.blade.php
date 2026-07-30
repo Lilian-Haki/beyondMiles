@@ -1,23 +1,54 @@
-@extends('layouts.app')
+<?php
 
-@section('title', 'Gym & Locations - Beyond Miles')
+use Livewire\Component;
 
-@section('content')
+new class extends Component
+{
+    public function render()
+    {
+        return view('livewire.home')
+            ->layout('layouts.app');
+    }
+};
+?>
+
 <div class="min-h-screen bg-background dark:bg-inverse-surface">
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-r from-primary to-tertiary text-on-primary">
-        <div class="absolute inset-0 bg-black opacity-20"></div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-headline font-bold mb-6">
-                    Our Gym & Locations
-                </h1>
-                <p class="text-xl md:text-2xl mb-8 text-primary-fixed-dim">
-                    Discover our premium fitness facilities and adventure locations across the region
-                </p>
-            </div>
-        </div>
-    </div>
+
+<!-- Our Training Section -->
+<section class="py-24 px-12 max-w-8xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+<div>
+<span class="text-primary font-bold uppercase tracking-widest text-xs">The Methodology</span>
+<h2 class="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mt-2">OUR TRAINING</h2>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- HIIT -->
+<div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-slate-900 transition-all duration-500 hover:-translate-y-2">
+<img class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700" data-alt="athlete performing explosive box jumps in a dark gym environment with sharp contrast lighting and grit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQB3zomdr282YeIBpbz6zhlSk1Vh3JQAg4gjGELzfqavmc-RCFGnM0vyTEqZEpqvq7IwC34Vml2CLOST_hHWLxIRkix3EkJlmtYLrrEJY-zX2_xSSZpyk9D5BVd3lHDcujprQxxiMyANtS6-yuDfJv7xI6z9_FtYXVmUaQRDvoTqXGBH3sCXcyf8FUKIFhGMA6g1wTzIUZwEjlZORiuShR9Z_oEzKE3zUka2q3A-_ebQphsToDMe5O8sUGlUVnIEM6mw99NXuZNw4"/>
+<div class="absolute inset-0 scrim-bottom flex flex-col justify-end p-8">
+<h3 class="text-white text-3xl font-black uppercase mb-2">HIIT</h3>
+<p class="text-white/70 text-sm mb-4">High-intensity interval training designed to push your VO2 max and ignite metabolism.</p>
+</div>
+</div>
+<!-- Yoga -->
+<div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-slate-900 transition-all duration-500 md:mt-12 hover:-translate-y-2">
+<img class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700" data-alt="serene yoga practitioner in a high-contrast pose against a minimalist industrial backdrop with soft side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvhm9nN-obeEBUO3smG9CRdd90oXvBmVm-PFNDXNLFvNReOvW9OIZTuJAlBMknUWLBz6di3YN4yvY8oxDVmo0F9zGwjIb9FhTw9QtqqEWgoyobHSKIEs1Frj1OOLO7e2Bou6nZRPa0G-5lHd-dhtG515q_9Y58GI55dKUcW4d_ZLIySnnvKXsTRUBLFssh-i2GOZWAb9LRyrgXw5Cpy4aCsQ3EJGlaWg5UyIEe862KFBYjJjMxcJBy-YDYsCsxg6IWt2mnuXyV9sw"/>
+<div class="absolute inset-0 scrim-bottom flex flex-col justify-end p-8">
+<h3 class="text-white text-3xl font-black uppercase mb-2">Yoga</h3>
+<p class="text-white/70 text-sm mb-4">Precision movement and breathwork to enhance recovery, focus, and structural integrity.</p>
+</div>
+</div>
+<!-- Strength -->
+<div class="group relative aspect-[4/5] overflow-hidden rounded-xl bg-slate-900 transition-all duration-500 hover:-translate-y-2">
+<img class="w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700" data-alt="close up of heavy iron dumbbells on a gym floor with dramatic lighting highlighting the metal texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaJJGFPIoYU2sOTfRVJxepkUw9d9FGKgTZAYgd50qHXYrhgfE-wTe_jRpMxwGNAYkP6HPEx0OZN_kuzKCDbkVk1LdbvUFSjVqzYcnYlLRwmliXJ8nHY1-oH93qfYN-8nHvSmOV_E6Eu7QMng6v0j8ZA3ImGWLhjQ9uuwMdTKvMCK0Rp9nc3Xduc7lzdfJXN8M1D1qnNtFh4KT6u34fvhP0Nz-lyUzqEq2XMDt_IefVCY3SY26ABZodIakh0GiiGa3kcn5KscSxUzw"/>
+<div class="absolute inset-0 scrim-bottom flex flex-col justify-end p-8">
+<h3 class="text-white text-3xl font-black uppercase mb-2">Strength</h3>
+<p class="text-white/70 text-sm mb-4">Functional powerlifting and bodybuilding for sustainable muscle growth and raw power.</p>
+</div>
+</div>
+</div>
+</section>
 
     <!-- Locations Grid -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -25,110 +56,74 @@
             <h2 class="text-3xl font-headline font-bold text-on-background dark:text-inverse-on-surface mb-4">Explore Our Locations</h2>
             <p class="text-lg text-on-surface-variant">Find the perfect spot for your next adventure</p>
         </div>
-
-        @if($locations->count() > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($locations as $location)
-                    <div class="bg-surface-container-low dark:bg-surface-container-high rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                        <!-- Location Image -->
-                        <div class="relative h-48 bg-surface-container-high">
-                            @if($location->image)
-                                <img src="{{ asset('storage/' . $location->image) }}"
-                                     alt="{{ $location->name }}"
-                                     class="w-full h-full object-cover">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-on-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                </div>
-                            @endif
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-surface-container-high bg-opacity-90 text-on-surface-variant px-3 py-1 rounded-full text-sm font-medium">
-                                    {{ $location->type }}
-                                </span>
-                            </div>
+<!-- Location Section -->
+<section class="py-24 bg-surface-container">
+<div class="max-w-8xl mx-auto px-12">
+    @if($primaryLocation)
+        <div class="flex flex-col lg:flex-row gap-12 items-center">
+            <div class="w-full lg:w-1/2">
+                <span class="text-primary font-bold uppercase tracking-widest text-xs">Our Base</span>
+                <h2 class="text-4xl font-black tracking-tight text-slate-900 mt-2 mb-6 uppercase">{{ $primaryLocation->name }}</h2>
+                <div class="space-y-8">
+                    <div class="flex gap-6 items-start">
+                        <div class="bg-primary/10 p-4 rounded-lg">
+                            <span class="material-symbols-outlined text-primary">location_on</span>
                         </div>
-
-                        <!-- Location Content -->
-                        <div class="p-6 bg-surface dark:bg-surface-container">
-                            <h3 class="text-xl font-headline font-bold text-on-surface dark:text-on-background mb-2">{{ $location->name }}</h3>
-                            <p class="text-on-surface-variant mb-4">{{ $location->description }}</p>
-
-                            <!-- Location Details -->
-                            <div class="space-y-2 mb-4">
-                                <div class="flex items-center text-on-surface-variant">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    {{ $location->address }}
-                                </div>
-                                @if($location->phone)
-                                    <div class="flex items-center text-on-surface-variant">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                        </svg>
-                                        {{ $location->phone }}
-                                    </div>
-                                @endif
-                                @if($location->email)
-                                    <div class="flex items-center text-on-surface-variant">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                        {{ $location->email }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            <!-- Status Badge -->
-                            @if($location->is_active)
-                                <span class="inline-block bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                    Active
-                                </span>
-                            @else
-                                <span class="inline-block bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                    Inactive
-                                </span>
-                            @endif
+                        <div>
+                            <h4 class="font-bold text-lg text-slate-900">Address</h4>
+                            <p class="text-on-surface-variant">{{ $primaryLocation->address ?: 'No address provided' }}</p>
                         </div>
                     </div>
-                @endforeach
-            </div>
-        @else
-            <!-- Empty State -->
-            <div class="text-center py-16">
-                <svg class="mx-auto h-24 w-24 text-on-surface-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                </svg>
-                <h3 class="mt-4 text-lg font-medium text-on-background dark:text-inverse-on-surface">No locations available</h3>
-                <p class="mt-2 text-on-surface-variant">Check back later for our amazing locations!</p>
-            </div>
-        @endif
-    </div>
-
-    <!-- Call to Action -->
-    <div class="bg-primary text-on-primary">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="text-center">
-                <h2 class="text-3xl font-headline font-bold mb-4">Ready for Your Next Adventure?</h2>
-                <p class="text-xl mb-8 text-primary-fixed-dim">
-                    Join us at one of our premium locations and experience the thrill of adventure
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('activities') }}"
-                       class="bg-surface text-on-surface hover:bg-surface-variant px-8 py-3 rounded-lg font-medium transition-colors duration-200">
-                        View Activities
-                    </a>
-                    <a href="{{ route('shop') }}"
-                       class="bg-tertiary text-on-tertiary hover:bg-tertiary-container px-8 py-3 rounded-lg font-medium transition-colors duration-200">
-                        Shop Gear
+                    @if($primaryLocation->training_hours)
+                        <div class="flex gap-6 items-start">
+                            <div class="bg-primary/10 p-4 rounded-lg">
+                                <span class="material-symbols-outlined text-primary">schedule</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900">Training Hours</h4>
+                                <p class="text-on-surface-variant">{{ $primaryLocation->training_hours }}</p>
+                            </div>
+                        </div>
+                    @endif
+                    @if($primaryLocation->training_days)
+                        <div class="flex gap-6 items-start">
+                            <div class="bg-primary/10 p-4 rounded-lg">
+                                <span class="material-symbols-outlined text-primary">calendar_today</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-slate-900">Training Days</h4>
+                                <p class="text-on-surface-variant">{{ $primaryLocation->training_days }}</p>
+                            </div>
+                        </div>
+                    @endif
+                    @if($primaryLocation->directions)
+                        <div class="rounded-3xl border border-outline-variant p-6 bg-white/80 dark:bg-slate-950/80">
+                            <h4 class="font-bold text-lg text-slate-900 mb-3">Directions</h4>
+                            <p class="text-on-surface-variant">{{ $primaryLocation->directions }}</p>
+                        </div>
+                    @endif
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($primaryLocation->address ?: $primaryLocation->name) }}"
+                       target="_blank"
+                       class="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-4 rounded-lg font-bold uppercase tracking-widest active:scale-95 transition-transform">
+                        Get Directions <span class="material-symbols-outlined text-sm">directions</span>
                     </a>
                 </div>
             </div>
+            <div class="w-full lg:w-1/2 aspect-square lg:aspect-video rounded-xl overflow-hidden shadow-sm">
+                <img class="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
+                     src="{{ $primaryLocation->image ? asset('storage/' . $primaryLocation->image) : 'https://images.unsplash.com/photo-1526403228236-494e79d9f10c?auto=format&fit=crop&w=1200&q=80' }}"
+                     alt="{{ $primaryLocation->name }}"/>
+            </div>
         </div>
-    </div>
+    @else
+        <div class="text-center py-24 rounded-3xl border border-outline-variant bg-white/80 dark:bg-slate-950/80">
+            <h3 class="text-3xl font-headline font-bold text-on-background dark:text-inverse-on-surface">No locations available</h3>
+            <p class="mt-4 text-on-surface-variant">Check back later for our latest gym locations, directions, and training schedules.</p>
+        </div>
+    @endif
 </div>
-@endsection
+</section>
+
+      
+    </div>
+   </div>
