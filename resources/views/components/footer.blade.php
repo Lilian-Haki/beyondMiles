@@ -54,12 +54,7 @@ new class extends Component {
 </div>
 </div>
 <div class="pt-12 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
-<p class="text-slate-500 text-xs">© 2024 Beyond Miles Adventure Co. All rights reserved.</p>
-<div class="flex gap-8 text-xs text-slate-500">
-<a class="hover:text-white" href="#">Privacy Policy</a>
-<a class="hover:text-white" href="#">Cookies</a>
-<a class="hover:text-white" href="#">Accessibility</a>
-</div>
+<p class="text-slate-500 text-xs">© 2025 Beyond Miles Adventure . All rights reserved.</p>
 </div>
 </div>
 </footer>
