@@ -55,7 +55,7 @@ Action::make('edit')
 <UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `url()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
 
 <Aside variant="danger">
-    If you are passing user-controlled data to the `url()` method, you should validate that the URL does not use a dangerous scheme such as `javascript:` or `data:`. Failing to do so could expose your application to XSS attacks.
+    If you are passing user-controlled data to the `url()` method, you should validate that the URL does not use a dangerous scheme such as `javascript:` or `data:`. Failing to do so could expose your application to XSS attacks. The simplest way to guard against this is to wrap the value in Filament's [`Str::sanitizeUrl()`](../advanced/security#validating-user-input) helper, which returns `null` for any URL that does not use `http`/`https` (or a relative path).
 </Aside>
 
 The entire look of the action's trigger button and the modal is customizable using fluent PHP methods. We provide a sensible and consistent styling for the UI, but all of this is customizable with CSS.
@@ -262,6 +262,8 @@ Action::make('edit')
     ->authorizationTooltip()
 ```
 
+If the denial does not provide a message (for example, your policy returns plain `false`, or a `Gate::before()` hook short-circuits the check), the action is hidden instead. You can supply a fallback message with `authorizationMessage()` to keep the action visible in that case.
+
 <AutoScreenshot name="actions/trigger-button/authorization-tooltip" alt="Disabled action button with an authorization tooltip" version="5.x" />
 
 You may instead allow the action to still be clickable even if the user is not authorized, but send a notification containing the response message, using the `authorizationNotification()` method:
@@ -274,6 +276,8 @@ Action::make('edit')
     ->authorize('update')
     ->authorizationNotification()
 ```
+
+As with `authorizationTooltip()`, the action is hidden if the denial does not provide a message, unless you supply a fallback with `authorizationMessage()`.
 
 ### Disabling a button
 
@@ -342,7 +346,7 @@ Action::make('filter')
     ->badgeColor('success')
 ```
 
-<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `badgeColor()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+<UtilityInjection set="actions" version="5.x" extras="Badge;;?string;;$badge;;The evaluated value of the badge.">As well as allowing a static value, the `badgeColor()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
 
 <AutoScreenshot name="actions/trigger-button/success-badged" alt="Trigger with green badge" version="5.x" />
 
@@ -393,116 +397,6 @@ Action::make('edit')
 <Aside variant="tip">
     By default, calling `extraAttributes()` multiple times will overwrite the previous attributes. If you wish to merge the attributes instead, you can pass `merge: true` to the method.
 </Aside>
-
-## Rate limiting actions
-
-You can rate limit actions by using the `rateLimit()` method. This method accepts the number of attempts per minute that a user IP address can make. If the user exceeds this limit, the action will not run and a notification will be shown:
-
-```php
-use Filament\Actions\Action;
-
-Action::make('delete')
-    ->rateLimit(5)
-```
-
-If the action opens a modal, the rate limit will be applied when the modal is submitted.
-
-If an action is opened with arguments or for a specific Eloquent record, the rate limit will apply to each unique combination of arguments or record for each action. The rate limit is also unique to the current Livewire component / page in a panel.
-
-<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `rateLimit()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
-
-## Customizing the rate limited notification
-
-When an action is rate limited, a notification is dispatched to the user, which indicates the rate limit.
-
-To customize the title of this notification, use the `rateLimitedNotificationTitle()` method:
-
-```php
-use Filament\Actions\DeleteAction;
-
-DeleteAction::make()
-    ->rateLimit(5)
-    ->rateLimitedNotificationTitle('Slow down!')
-```
-
-<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `rateLimitedNotificationTitle()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
-
-You may customize the entire notification using the `rateLimitedNotification()` method:
-
-```php
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Actions\DeleteAction;
-use Filament\Notifications\Notification;
-
-DeleteAction::make()
-    ->rateLimit(5)
-    ->rateLimitedNotification(
-       fn (TooManyRequestsException $exception): Notification => Notification::make()
-            ->warning()
-            ->title('Slow down!')
-            ->body("You can try deleting again in {$exception->secondsUntilAvailable} seconds."),
-    )
-```
-
-<UtilityInjection set="actions" version="5.x" extras="Exception;;DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;;$exception;;The exception encountered when the rate limit was hit.||Minutes until available;;int;;$minutes;;The number of minutes until the rate limit will pass.||Seconds until available;;int;;$seconds;;The number of seconds until the rate limit will pass.||Notification;;Filament\Notifications\Notification;;$notification;;The default notification object for the rate limit, which could be a useful starting point for customization.">As well as allowing a static value, the `rateLimitedNotification()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
-
-### Customizing the rate limit behavior
-
-If you wish to customize the rate limit behavior, you can use Laravel's [rate limiting](https://laravel.com/docs/rate-limiting#basic-usage) features and Filament's [flash notifications](../notifications/overview) together in the action.
-
-If you want to rate limit immediately when an action modal is opened, you can do so in the `mountUsing()` method:
-
-```php
-use Filament\Actions\Action;
-use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\RateLimiter;
-
-Action::make('delete')
-    ->mountUsing(function () {
-        if (RateLimiter::tooManyAttempts(
-            $rateLimitKey = 'delete:' . auth()->id(),
-            maxAttempts: 5,
-        )) {
-            Notification::make()
-                ->title('Too many attempts')
-                ->body('Please try again in ' . RateLimiter::availableIn($rateLimitKey) . ' seconds.')
-                ->danger()
-                ->send();
-                
-            return;
-        }
-        
-         RateLimiter::hit($rateLimitKey);
-    })
-```
-
-If you want to rate limit when an action is run, you can do so in the `action()` method:
-
-```php
-use Filament\Actions\Action;
-use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\RateLimiter;
-
-Action::make('delete')
-    ->action(function () {
-        if (RateLimiter::tooManyAttempts(
-            $rateLimitKey = 'delete:' . auth()->id(),
-            maxAttempts: 5,
-        )) {
-            Notification::make()
-                ->title('Too many attempts')
-                ->body('Please try again in ' . RateLimiter::availableIn($rateLimitKey) . ' seconds.')
-                ->danger()
-                ->send();
-                
-            return;
-        }
-        
-         RateLimiter::hit($rateLimitKey);
-        
-        // ...
-    })
-```
 
 ## Using actions in schemas
 
@@ -739,4 +633,114 @@ use Illuminate\Http\Request;
 function (Request $request, array $arguments) {
     // ...
 }
+```
+
+## Rate limiting actions
+
+You can rate limit actions by using the `rateLimit()` method. This method accepts the number of attempts per minute that a user IP address can make. If the user exceeds this limit, the action will not run and a notification will be shown:
+
+```php
+use Filament\Actions\Action;
+
+Action::make('delete')
+    ->rateLimit(5)
+```
+
+If the action opens a modal, the rate limit will be applied when the modal is submitted.
+
+If an action is opened with arguments or for a specific Eloquent record, the rate limit will apply to each unique combination of arguments or record for each action. The rate limit is also unique to the current Livewire component / page in a panel.
+
+<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `rateLimit()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+
+### Customizing the rate limited notification
+
+When an action is rate limited, a notification is dispatched to the user, which indicates the rate limit.
+
+To customize the title of this notification, use the `rateLimitedNotificationTitle()` method:
+
+```php
+use Filament\Actions\DeleteAction;
+
+DeleteAction::make()
+    ->rateLimit(5)
+    ->rateLimitedNotificationTitle('Slow down!')
+```
+
+<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `rateLimitedNotificationTitle()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+
+You may customize the entire notification using the `rateLimitedNotification()` method:
+
+```php
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Actions\DeleteAction;
+use Filament\Notifications\Notification;
+
+DeleteAction::make()
+    ->rateLimit(5)
+    ->rateLimitedNotification(
+       fn (TooManyRequestsException $exception): Notification => Notification::make()
+            ->warning()
+            ->title('Slow down!')
+            ->body("You can try deleting again in {$exception->secondsUntilAvailable} seconds."),
+    )
+```
+
+<UtilityInjection set="actions" version="5.x" extras="Exception;;DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;;$exception;;The exception encountered when the rate limit was hit.||Minutes until available;;int;;$minutes;;The number of minutes until the rate limit will pass.||Seconds until available;;int;;$seconds;;The number of seconds until the rate limit will pass.||Notification;;Filament\Notifications\Notification;;$notification;;The default notification object for the rate limit, which could be a useful starting point for customization.">As well as allowing a static value, the `rateLimitedNotification()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+
+### Customizing the rate limit behavior
+
+If you wish to customize the rate limit behavior, you can use Laravel's [rate limiting](https://laravel.com/docs/rate-limiting#basic-usage) features and Filament's [flash notifications](../notifications/overview) together in the action.
+
+If you want to rate limit immediately when an action modal is opened, you can do so in the `mountUsing()` method:
+
+```php
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\RateLimiter;
+
+Action::make('delete')
+    ->mountUsing(function () {
+        if (RateLimiter::tooManyAttempts(
+            $rateLimitKey = 'delete:' . auth()->id(),
+            maxAttempts: 5,
+        )) {
+            Notification::make()
+                ->title('Too many attempts')
+                ->body('Please try again in ' . RateLimiter::availableIn($rateLimitKey) . ' seconds.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+         RateLimiter::hit($rateLimitKey);
+    })
+```
+
+If you want to rate limit when an action is run, you can do so in the `action()` method:
+
+```php
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\RateLimiter;
+
+Action::make('delete')
+    ->action(function () {
+        if (RateLimiter::tooManyAttempts(
+            $rateLimitKey = 'delete:' . auth()->id(),
+            maxAttempts: 5,
+        )) {
+            Notification::make()
+                ->title('Too many attempts')
+                ->body('Please try again in ' . RateLimiter::availableIn($rateLimitKey) . ' seconds.')
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+         RateLimiter::hit($rateLimitKey);
+
+        // ...
+    })
 ```

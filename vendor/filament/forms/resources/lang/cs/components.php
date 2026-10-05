@@ -122,9 +122,53 @@ return [
 
     ],
 
+    'color_picker' => [
+
+        'panel_label' => 'Výběr barvy',
+
+    ],
+
+    'date_time_picker' => [
+
+        'month_select' => [
+            'label' => 'Měsíc',
+        ],
+
+        'year_input' => [
+            'label' => 'Rok',
+        ],
+
+        'hour_input' => [
+            'label' => 'Hodina',
+        ],
+
+        'minute_input' => [
+            'label' => 'Minuta',
+        ],
+
+        'second_input' => [
+            'label' => 'Sekunda',
+        ],
+
+    ],
+
     'file_upload' => [
 
+        'actions' => [
+
+            'download' => [
+                'label' => 'Stáhnout',
+            ],
+
+            'open' => [
+                'label' => 'Otevřít v nové záložce',
+            ],
+
+        ],
+
         'editor' => [
+
+            'label' => 'Editor obrázků',
 
             'actions' => [
 
@@ -268,6 +312,18 @@ return [
 
         ],
 
+        'columns' => [
+
+            'actions' => [
+                'label' => 'Akce',
+            ],
+
+            'reorder' => [
+                'label' => 'Přesunout',
+            ],
+
+        ],
+
         'fields' => [
 
             'key' => [
@@ -286,7 +342,7 @@ return [
 
         'file_attachments_accepted_file_types_message' => 'Nahrané soubory musí být typu: :values.',
 
-        'file_attachments_max_size_message' => 'Nahrané soubory nesmí být větší než :max kilobajtů.',
+        'file_attachments_max_size_message' => 'Nahrané soubory nesmí být větší než :max kB.',
 
         'tools' => [
             'attach_files' => 'Přidat soubory',
@@ -338,6 +394,18 @@ return [
     ],
 
     'repeater' => [
+
+        'columns' => [
+
+            'actions' => [
+                'label' => 'Akce',
+            ],
+
+            'reorder' => [
+                'label' => 'Přesunout',
+            ],
+
+        ],
 
         'actions' => [
 
@@ -464,14 +532,14 @@ return [
                             'placeholder' => 'Žádné',
 
                             'options' => [
-                                'two' => 'Dvě',
+                                'two' => 'Dva',
                                 'three' => 'Tři',
                                 'four' => 'Čtyři',
                                 'five' => 'Pět',
-                                'two_start_third' => 'Dvě (Začátek třetí)',
-                                'two_end_third' => 'Dvě (Konec třetí)',
-                                'two_start_fourth' => 'Dvě (Začátek čtvrté)',
-                                'two_end_fourth' => 'Dvě (Konec čtvrté)',
+                                'two_start_third' => 'Dva (první zabírá třetinu)',
+                                'two_end_third' => 'Dva (druhý zabírá třetinu)',
+                                'two_start_fourth' => 'Dva (první zabírá čtvrtinu)',
+                                'two_end_fourth' => 'Dva (druhý zabírá čtvrtinu)',
                             ],
                         ],
 
@@ -548,6 +616,35 @@ return [
 
                         'color' => [
                             'label' => 'Barva',
+
+                            'options' => [
+                                'slate' => 'Břidlicová',
+                                'gray' => 'Šedá',
+                                'zinc' => 'Zinková',
+                                'neutral' => 'Neutrální',
+                                'stone' => 'Kamenná',
+                                'mauve' => 'Starorůžová',
+                                'olive' => 'Olivová',
+                                'mist' => 'Mlhová',
+                                'taupe' => 'Taupe',
+                                'red' => 'Červená',
+                                'orange' => 'Oranžová',
+                                'amber' => 'Jantarová',
+                                'yellow' => 'Žlutá',
+                                'lime' => 'Limetková',
+                                'green' => 'Zelená',
+                                'emerald' => 'Smaragdová',
+                                'teal' => 'Modrozelená',
+                                'cyan' => 'Azurová',
+                                'sky' => 'Nebeská',
+                                'blue' => 'Modrá',
+                                'indigo' => 'Indigová',
+                                'violet' => 'Fialová',
+                                'purple' => 'Purpurová',
+                                'fuchsia' => 'Fuchsiová',
+                                'pink' => 'Růžová',
+                                'rose' => 'Růžová',
+                            ],
                         ],
 
                         'custom_color' => [
@@ -564,15 +661,19 @@ return [
 
         'file_attachments_accepted_file_types_message' => 'Nahrané soubory musí být typu: :values.',
 
-        'file_attachments_max_size_message' => 'Nahrané soubory nesmí být větší než :max kilobajtů.',
+        'file_attachments_max_size_message' => 'Nahrané soubory nesmí být větší než :max kB.',
 
         'no_merge_tag_search_results_message' => 'Žádné výsledky pro značky slučování.',
 
         'mentions' => [
             'no_options_message' => 'Nejsou dostupné žádné možnosti.',
             'no_search_results_message' => 'Žádné výsledky neodpovídají vašemu hledání.',
-            'search_prompt' => 'Začněte psát na vyhledávání...',
+            'search_prompt' => 'Zadejte hledaný výraz...',
             'searching_message' => 'Hledám...',
+        ],
+
+        'toolbar' => [
+            'label' => 'Panel nástrojů',
         ],
 
         'tools' => [
@@ -589,9 +690,12 @@ return [
             'code_block' => 'Blok kódu',
             'custom_blocks' => 'Bloky',
             'details' => 'Detaily',
-            'h1' => 'Nadpis 1',
+            'h1' => 'Nadpis',
             'h2' => 'Nadpis 2',
             'h3' => 'Nadpis 3',
+            'h4' => 'Nadpis 4',
+            'h5' => 'Nadpis 5',
+            'h6' => 'Nadpis 6',
             'grid' => 'Mřížka',
             'grid_delete' => 'Smazat mřížku',
             'highlight' => 'Zvýraznit',
@@ -601,6 +705,7 @@ return [
             'link' => 'Odkaz',
             'merge_tags' => 'Sloučit značky',
             'ordered_list' => 'Číslovaný seznam',
+            'paragraph' => 'Odstavec',
             'redo' => 'Vpřed',
             'small' => 'Malý text',
             'strike' => 'Přeškrtnutí',
@@ -684,7 +789,7 @@ return [
 
         'loading_message' => 'Načítání...',
 
-        'max_items_message' => 'Lze vybrat pouze 1 položka.|Lze vybrat pouze :count položky.|Lze vybrat pouze :count položek.',
+        'max_items_message' => 'Lze vybrat pouze 1 položku.|Lze vybrat pouze :count položky.|Lze vybrat pouze :count položek.',
 
         'no_options_message' => 'Nejsou dostupné žádné možnosti.',
 
@@ -709,6 +814,10 @@ return [
         ],
 
         'placeholder' => 'Nový štítek',
+
+        'tag_added' => 'Přidáno: :tag',
+
+        'tag_removed' => 'Odstraněno: :tag',
 
     ],
 

@@ -2,6 +2,7 @@
 
 namespace Filament\Commands;
 
+use Composer\InstalledVersions;
 use Filament\Support\Commands\Concerns\CanManipulateFiles;
 use Filament\Support\Commands\Concerns\HasPanel;
 use Filament\Support\Commands\Exceptions\FailureCommandOutput;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Process\Process;
 
 use function Laravel\Prompts\confirm;
 
@@ -125,7 +127,12 @@ class MakeThemeCommand extends Command
         // Offer to compile the theme
         if (confirm('Would you like to compile the theme now?', default: true)) {
             $this->components->info('Compiling theme...');
-            passthru("{$this->pm} run build");
+
+            $process = new Process([$this->pm, 'run', 'build']);
+            $process->setTty(Process::isTtySupported());
+            $process->run(function (string $type, string $buffer): void {
+                $this->output->write($buffer);
+            });
         } else {
             $this->components->info("Run `{$this->pm} run build` to compile the theme.");
         }
@@ -135,27 +142,34 @@ class MakeThemeCommand extends Command
 
     protected function configurePackageManager(): void
     {
-        $this->pm = $this->option('pm') ?? 'npm';
+        $pmOption = $this->option('pm');
+        $this->pm = $pmOption ?? 'npm';
 
-        exec("{$this->pm} -v", $pmVersion, $pmVersionExistCode);
+        $process = new Process([$this->pm, '-v']);
+        $process->run();
 
-        if ($pmVersionExistCode !== 0) {
-            $this->error('Node.js is not installed. Please install before continuing.');
+        if (! $process->isSuccessful()) {
+            if (filled($pmOption)) {
+                $this->error("The [{$pmOption}] package manager is not installed. Please install it before continuing.");
+            } else {
+                $this->error('Node.js is not installed. Please install before continuing.');
+            }
 
             throw new FailureCommandOutput;
         }
 
-        $this->info("Using {$this->pm} v{$pmVersion[0]}");
+        $this->info("Using {$this->pm} v" . trim($process->getOutput()));
     }
 
     protected function installDependencies(): void
     {
-        $installCommand = match ($this->pm) {
-            'yarn' => 'yarn add',
-            default => "{$this->pm} install",
+        $installArguments = match ($this->pm) {
+            'yarn' => [$this->pm, 'add'],
+            default => [$this->pm, 'install'],
         };
 
-        exec("{$installCommand} tailwindcss@latest @tailwindcss/vite --save-dev");
+        $process = new Process([...$installArguments, 'tailwindcss@latest', '@tailwindcss/vite', '--save-dev']);
+        $process->run();
 
         $this->components->info('Dependencies installed successfully.');
     }
@@ -181,6 +195,12 @@ class MakeThemeCommand extends Command
 
         $this->copyStubToApp('ThemeCss', $cssFilePath, [
             'classDirectory' => filled($classDirectory) ? $classDirectory : '',
+            'filamentThemeCssPath' => $this->escapeCssString(
+                $this->getRelativePath(
+                    (string) InstalledVersions::getInstallPath('filament/filament') . '/resources/css/theme.css',
+                    dirname($cssFilePath),
+                ),
+            ),
             'panel' => $this->panel->getId(),
             'viewDirectory' => filled($viewDirectory) ? $viewDirectory : '',
         ]);

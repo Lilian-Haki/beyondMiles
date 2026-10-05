@@ -28,6 +28,10 @@ Action::make('delete')
     The confirmation modal is not available when a `url()` is set instead of an `action()`. Instead, you should redirect to the URL within the `action()` closure.
 </Aside>
 
+<Aside variant="info">
+    Confirmation modals use the `alertdialog` ARIA role instead of `dialog`, so screen readers announce them as alerts and automatically read the modal's description when they open.
+</Aside>
+
 ## Controlling modal content
 
 ### Customizing the modal's heading, description, and submit action label
@@ -399,6 +403,29 @@ Action::make('updateAuthor')
 
 Instead of opening in the center of the screen, the modal content will now slide in from the right and consume the entire height of the browser.
 
+### Changing the slide-over position
+
+By default, slide-overs enter from the end of the screen (the right side in left-to-right languages, the left side in right-to-left languages). You may change this to the start of the screen by passing `SlideOverPosition::Start` to the `slideOverPosition()` method:
+
+```php
+use Filament\Actions\Action;
+use Filament\Support\Enums\SlideOverPosition;
+
+Action::make('updateAuthor')
+    ->schema([
+        // ...
+    ])
+    ->action(function (array $data): void {
+        // ...
+    })
+    ->slideOver()
+    ->slideOverPosition(SlideOverPosition::Start)
+```
+
+<AutoScreenshot name="actions/modal/slide-over-start" alt="Slide over from the start of the screen" version="5.x" />
+
+This is useful when the action trigger sits near the start of the viewport — for example, a row action at the beginning of a table row — so the slide-over opens adjacent to its trigger instead of across the screen.
+
 ## Changing the modal width
 
 You can change the width of the modal by using the `modalWidth()` method. Options correspond to [Tailwind's max-width scale](https://tailwindcss.com/docs/max-width). The options are `ExtraSmall`, `Small`, `Medium`, `Large`, `ExtraLarge`, `TwoExtraLarge`, `ThreeExtraLarge`, `FourExtraLarge`, `FiveExtraLarge`, `SixExtraLarge`, `SevenExtraLarge`, and `Screen`:
@@ -589,7 +616,7 @@ In this example, if the `fourth` action is run, the `second` action is canceled,
 
 ## Accessing information about parent actions from a child
 
-You can access the instances of parent actions and their raw data and arguments by injecting the `$mountedActions` array in a function used by your nested action. For example, to get the top-most parent action currently active on the page, you can use `$mountedActions[0]`. From there, you can get the raw data for that action by calling `$mountedActions[0]->getRawData()`. Please be aware that raw data is not validated since the action has not been submitted yet:
+You can access the parent action instance by injecting `$parentAction` into the `action()` or `mountUsing()` function of your nested action. From there, you can get the raw data for that action by calling `getRawData()`. Please be aware that raw data is not validated since the action has not been submitted yet:
 
 ```php
 use Filament\Actions\Action;
@@ -605,17 +632,17 @@ Action::make('first')
     ->extraModalFooterActions([
         Action::make('second')
             ->requiresConfirmation()
-            ->action(function (array $mountedActions) {
-                dd($mountedActions[0]->getRawData());
-            
+            ->action(function (Action $parentAction) {
+                dd($parentAction->getRawData());
+
                 // ...
             }),
     ])
 ```
 
-You can do similar with the current arguments for a parent action, with the `$mountedActions[0]->getArguments()` method.
+You can do similar with the current arguments for a parent action, with the `$parentAction->getArguments()` method.
 
-Even if you have multiple layers of nesting, the `$mountedActions` array will contain every action that is currently active, so you can access information about them:
+If you need to access an action other than the direct parent, you can inject the `$mountedActions` array, which contains every action that is currently active:
 
 ```php
 use Filament\Actions\Action;
@@ -661,6 +688,87 @@ Action::make('first')
                             }),
                     ]),
             ]),
+    ])
+```
+
+### Validating the data of a parent action
+
+`getRawData()` returns the current unvalidated data. When a nested action relies on that data being valid, use `getValidatedData()` instead, which validates it with the rules of the action it belongs to and returns the result:
+
+```php
+use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
+
+Action::make('first')
+    ->schema([
+        TextInput::make('foo')
+            ->required(),
+    ])
+    ->action(function () {
+        // ...
+    })
+    ->extraModalFooterActions([
+        Action::make('second')
+            ->action(function (Action $parentAction) {
+                $data = $parentAction->getValidatedData();
+
+                // ...
+            }),
+    ])
+```
+
+If the parent action's schema is invalid, a `ValidationException` is thrown. When the nested action has no modal of its own, the parent action's modal reports the errors as it would for any other failed validation. When it does have a modal, call `getValidatedData()` from `mountUsing()` so that the errors are reported before the nested action's modal opens:
+
+```php
+use Filament\Actions\Action;
+use Filament\Schemas\Schema;
+
+Action::make('second')
+    ->schema([
+        // ...
+    ])
+    ->mountUsing(function (Action $parentAction, Schema $schema) {
+        $data = $parentAction->getValidatedData();
+
+        // ...
+
+        $schema->fill();
+    })
+```
+
+<Aside variant="warning">
+    Reading an action's data must not have the side effects of submitting it, so the hooks that run before dehydration are skipped, as they are for the repeater's `getItemState()`. A newly uploaded file can therefore remain a `TemporaryUploadedFile` instead of becoming a stored path. `mutateDataUsing()` is not applied either, and the action's `beforeFormValidated()` and `afterFormValidated()` hooks do not run.
+</Aside>
+
+### Filling in the data of a parent action
+
+A nested action can write into the schema data of a mounted parent action, using `fillData()`. Only keys for fields in that action's schema are filled, and other keys are ignored. The data is hydrated by the action's schema, so nested state and dot-notation keys land where the action reads them, and the action validates it with its own rules when it is submitted:
+
+```php
+use Filament\Actions\Action;
+use Filament\Forms\Components\TextInput;
+
+Action::make('createInvoice')
+    ->schema([
+        TextInput::make('title')
+            ->required(),
+        TextInput::make('reference')
+            ->required(),
+    ])
+    ->action(function (array $data) {
+        // `$data['reference']` is filled in.
+    })
+    ->extraModalFooterActions([
+        Action::make('generateReference')
+            ->schema([
+                TextInput::make('prefix')
+                    ->required(),
+            ])
+            ->action(function (array $data, Action $parentAction) {
+                $parentAction->fillData([
+                    'reference' => "{$data['prefix']}-123",
+                ]);
+            }),
     ])
 ```
 
@@ -720,6 +828,26 @@ use Filament\Support\View\Components\ModalComponent;
 ModalComponent::closedByEscaping(false);
 ```
 
+### Disabling the unsaved changes alert
+
+When [unsaved changes alerts](../panel-configuration#unsaved-changes-alerts) are enabled for a panel, users are warned before leaving the page while an action modal is open. If a specific action's modal cannot contain unsaved changes, you can disable the warning for it using the `unsavedChangesAlert(false)` method:
+
+```php
+use Filament\Actions\Action;
+use Filament\Infolists\Components\TextEntry;
+
+Action::make('viewAuthor')
+    ->schema([
+        TextEntry::make('name'),
+        TextEntry::make('email'),
+    ])
+    ->unsavedChangesAlert(false)
+```
+
+<UtilityInjection set="actions" version="5.x">The `unsavedChangesAlert()` method also accepts a function to dynamically calculate the value. You can inject various utilities into the function as parameters.</UtilityInjection>
+
+By default, actions with a [disabled schema](#disabling-all-form-fields), such as `ViewAction`, do not trigger the alert, since their modals do not accept user input.
+
 ### Hiding the modal close button
 
 By default, modals have a close button in the top right corner. If you wish to hide the close button, you can use the `modalCloseButton(false)` method:
@@ -748,6 +876,31 @@ ModalComponent::closeButton(false);
 ```
 
 <AutoScreenshot name="actions/modal/no-close-button" alt="Modal without a close button" version="5.x" />
+
+## Making the modal click-through
+
+By default, a modal blocks interaction with the rest of the page while it is open. If you want the user to be able to keep interacting with the page behind the modal, you can make it "click-through" using the `modalClickThrough()` method:
+
+```php
+use Filament\Actions\Action;
+
+Action::make('updateAuthor')
+    ->schema([
+        // ...
+    ])
+    ->action(function (array $data): void {
+        // ...
+    })
+    ->modalClickThrough()
+```
+
+When a modal is click-through, its backdrop is removed, clicks outside the modal window pass through to the page beneath, and the page remains scrollable. The modal can still be closed using its close button or by pressing the escape key.
+
+<Aside variant="info">
+    A click-through modal cannot be closed by clicking away, as that would be incompatible with interacting with the page behind it. Enabling `modalClickThrough()` therefore disables closing by clicking away automatically.
+</Aside>
+
+<UtilityInjection set="actions" version="5.x">The `modalClickThrough()` method also accepts a function to dynamically calculate the value. You can inject various utilities into the function as parameters.</UtilityInjection>
 
 ## Preventing the modal from autofocusing
 
@@ -806,6 +959,49 @@ In this example, when the user clicks the delete button on a repeater item, the 
 
 <AutoScreenshot name="actions/modal/overlaying-child" alt="Child confirmation modal overlaying a parent slide-over" version="5.x" />
 
+## Canceling parent actions when a modal is closed
+
+The `cancelParentActions()` method above only cancels parent actions when the child action is run. If the user closes the child's modal instead — by pressing Escape, clicking the backdrop, or using the close button — by default only that modal is closed, leaving any parent actions still mounted. To also cancel parent actions when the modal is closed, allowing the user to abandon a multi-step flow entirely rather than closing one modal at a time, use the `cancelParentActionsOnClose()` method:
+
+```php
+use Filament\Actions\Action;
+
+Action::make('createPost')
+    ->schema([
+        // ...
+    ])
+    ->extraModalFooterActions([
+        Action::make('saveAsDraft')
+            ->schema([
+                // ...
+            ])
+            ->cancelParentActionsOnClose()
+            ->action(function (): void {
+                // ...
+            }),
+    ])
+    ->action(function (array $data): void {
+        // ...
+    })
+```
+
+Now, closing the `saveAsDraft` modal will also cancel the `createPost` action and close its modal.
+
+Like `cancelParentActions()`, you can pass the name of a parent action to cancel back to a specific parent, including its children, rather than all of them:
+
+```php
+use Filament\Actions\Action;
+
+Action::make('editPostMetadata')
+    ->schema([
+        // ...
+    ])
+    ->cancelParentActionsOnClose('createPost')
+    ->action(function (): void {
+        // ...
+    })
+```
+
 ## Optimizing modal configuration methods
 
 When you use database queries or other heavy operations inside modal configuration methods like `modalHeading()`, they can be executed more than once. This is because Filament uses these methods to decide whether to render the modal or not, and also to render the modal's content.
@@ -851,4 +1047,22 @@ Action::make('updateAuthor')
 
 <Aside variant="tip">
     By default, calling `extraModalWindowAttributes()` multiple times will overwrite the previous attributes. If you wish to merge the attributes instead, you can pass `merge: true` to the method.
+</Aside>
+
+
+## Adding extra attributes to the modal overlay
+
+You can pass extra HTML attributes to the modal overlay via the `extraModalOverlayAttributes()`. The attributes should be represented by an array, where the key is the attribute name and the value is the attribute value:
+
+```php
+use Filament\Actions\Action;
+
+Action::make('updateAuthor')
+    ->extraModalOverlayAttributes(['class' => 'update-author-overlay'])
+```
+
+<UtilityInjection set="actions" version="5.x">As well as allowing a static value, the `extraModalOverlayAttributes()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+
+<Aside variant="tip">
+    By default, calling `extraModalOverlayAttributes()` multiple times will overwrite the previous attributes. If you wish to merge the attributes instead, you can pass <code>merge: true</code> to the method.
 </Aside>

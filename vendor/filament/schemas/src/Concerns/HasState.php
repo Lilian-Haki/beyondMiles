@@ -16,6 +16,8 @@ trait HasState
 
     protected string $cachedAbsoluteStatePath;
 
+    protected bool $shouldLoadStateFromRelationshipsWhenHydratingPartially = true;
+
     /**
      * @var array<string, mixed> | object | null
      */
@@ -175,11 +177,14 @@ trait HasState
                 $cache[$component->getStatePath()] = true;
             }
 
+            $childCaches = [];
+
             foreach ($component->getChildSchemas(withHidden: true) as $childSchema) {
-                $cache = [
-                    ...$cache,
-                    ...$childSchema->buildDehydratedComponentsCache(),
-                ];
+                $childCaches[] = $childSchema->buildDehydratedComponentsCache();
+            }
+
+            if ($childCaches !== []) {
+                $cache = array_merge($cache, ...$childCaches);
             }
         }
 
@@ -316,8 +321,9 @@ trait HasState
 
     /**
      * @param  array<string, mixed> | null  $state
+     * @param  array<string, true>  $appliedStateCastPaths
      */
-    public function fill(?array $state = null, bool $shouldCallHydrationHooks = true, bool $shouldFillStateWithNull = true): static
+    public function fill(?array $state = null, bool $shouldCallHydrationHooks = true, bool $shouldFillStateWithNull = true, bool $shouldApplyStateCasts = true, array &$appliedStateCastPaths = []): static
     {
         $hydratedDefaultState = null;
 
@@ -327,7 +333,7 @@ trait HasState
             $this->rawState($state);
         }
 
-        $this->hydrateState($hydratedDefaultState, $shouldCallHydrationHooks);
+        $this->hydrateState($hydratedDefaultState, $shouldCallHydrationHooks, $shouldApplyStateCasts, $appliedStateCastPaths);
 
         if ($shouldFillStateWithNull) {
             $this->fillStateWithNull();
@@ -342,7 +348,21 @@ trait HasState
      */
     public function fillPartially(array $state, array $statePaths, bool $shouldCallHydrationHooks = true, bool $shouldFillStateWithNull = true): static
     {
-        $this->partialRawState(collect($state)->dot()->only($statePaths)->all());
+        $partialState = [];
+
+        foreach ($statePaths as $statePath) {
+            if (array_key_exists($statePath, $state)) {
+                $partialState[$statePath] = $state[$statePath];
+
+                continue;
+            }
+
+            if (Arr::has($state, $statePath)) {
+                $partialState[$statePath] = data_get($state, $statePath);
+            }
+        }
+
+        $this->partialRawState($partialState);
 
         if ($schemaStatePath = $this->getStatePath()) {
             $statePaths = array_map(
@@ -364,16 +384,36 @@ trait HasState
     }
 
     /**
-     * @param  array<string, mixed> | null  $hydratedDefaultState
+     * @internal Do not use this method outside the internals of Filament. It is subject to breaking changes in minor and patch releases.
+     *
+     * @param  array<string, mixed>  $state
+     * @param  array<string>  $statePaths
      */
-    public function hydrateState(?array &$hydratedDefaultState, bool $shouldCallHydrationHooks = true): void
+    public function fillPartiallyWithoutLoadingStateFromRelationships(array $state, array $statePaths, bool $shouldCallHydrationHooks = true, bool $shouldFillStateWithNull = true): static
+    {
+        $shouldLoadStateFromRelationships = $this->shouldLoadStateFromRelationshipsWhenHydratingPartially;
+
+        $this->shouldLoadStateFromRelationshipsWhenHydratingPartially = false;
+
+        try {
+            return $this->fillPartially($state, $statePaths, $shouldCallHydrationHooks, $shouldFillStateWithNull);
+        } finally {
+            $this->shouldLoadStateFromRelationshipsWhenHydratingPartially = $shouldLoadStateFromRelationships;
+        }
+    }
+
+    /**
+     * @param  array<string, mixed> | null  $hydratedDefaultState
+     * @param  array<string, true>  $appliedStateCastPaths
+     */
+    public function hydrateState(?array &$hydratedDefaultState, bool $shouldCallHydrationHooks = true, bool $shouldApplyStateCasts = true, array &$appliedStateCastPaths = []): void
     {
         foreach ($this->getComponents(withActions: false, withHidden: true) as $component) {
             if ($component instanceof Entry) {
                 continue;
             }
 
-            $component->hydrateState($hydratedDefaultState, $shouldCallHydrationHooks);
+            $component->hydrateState($hydratedDefaultState, $shouldCallHydrationHooks, $shouldApplyStateCasts, $appliedStateCastPaths);
         }
     }
 
@@ -389,6 +429,15 @@ trait HasState
 
             $component->hydrateStatePartially($statePaths, $shouldCallHydrationHooks);
         }
+    }
+
+    /**
+     * @internal Do not use this method outside the internals of Filament. It is subject to breaking changes in minor and patch releases.
+     */
+    public function shouldLoadStateFromRelationshipsWhenHydratingPartially(): bool
+    {
+        return $this->shouldLoadStateFromRelationshipsWhenHydratingPartially &&
+            ($this->getParentComponent()?->getContainer()->shouldLoadStateFromRelationshipsWhenHydratingPartially() ?? true);
     }
 
     public function fillStateWithNull(): void
@@ -557,7 +606,8 @@ trait HasState
     public function getStatePath(bool $isAbsolute = true): ?string
     {
         if (! $isAbsolute) {
-            return $this->statePath;
+            // Security: Strip characters that could break out of a quoted HTML attribute or a JS string, so every downstream sink that embeds the state path raw is safe without per-sink escaping. Client-influenced repeater item keys flow in here, and legitimate state paths never contain these characters.
+            return ($this->statePath === null) ? null : preg_replace('/[<>"\'`\x00-\x1F\x7F]/', '', $this->statePath);
         }
 
         if (isset($this->cachedAbsoluteStatePath)) {
@@ -570,8 +620,8 @@ trait HasState
             $pathComponents[] = $parentComponentStatePath;
         }
 
-        if (filled($statePath = $this->statePath)) {
-            $pathComponents[] = $statePath;
+        if (filled($this->statePath)) {
+            $pathComponents[] = $this->getStatePath(isAbsolute: false);
         }
 
         return $this->cachedAbsoluteStatePath = implode('.', $pathComponents);

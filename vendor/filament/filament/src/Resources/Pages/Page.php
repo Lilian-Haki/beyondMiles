@@ -40,11 +40,14 @@ abstract class Page extends BasePage
     use CanAuthorizeResourceAccess;
     use InteractsWithParentRecord;
 
-    protected static ?string $breadcrumb = null;
-
     protected static string $resource;
 
     protected static bool $isDiscovered = false;
+
+    /**
+     * @var array<class-string, string>
+     */
+    protected static array $cachedResourcePageNames = [];
 
     /**
      * @param  array<string, mixed>  $parameters
@@ -74,6 +77,7 @@ abstract class Page extends BasePage
     {
         return [
             NavigationItem::make(static::getNavigationLabel())
+                ->key(static::class)
                 ->group(static::getNavigationGroup())
                 ->parentItem(static::getNavigationParentItem())
                 ->icon(static::getNavigationIcon())
@@ -110,6 +114,11 @@ abstract class Page extends BasePage
     }
 
     public static function getResourcePageName(): string
+    {
+        return static::$cachedResourcePageNames[static::class] ??= static::resolveResourcePageName();
+    }
+
+    protected static function resolveResourcePageName(): string
     {
         foreach (static::getResource()::getPages() as $pageName => $pageRegistration) {
             if ($pageRegistration->getPage() !== static::class) {
@@ -216,6 +225,17 @@ abstract class Page extends BasePage
             }
         }
 
+        if (Filament::getCurrentOrDefaultPanel()->hasNavigationHierarchyInBreadcrumbs()) {
+            $navigationHierarchyBreadcrumbs = $this->getNavigationHierarchyBreadcrumbs();
+
+            if ($navigationHierarchyBreadcrumbs !== null) {
+                return [
+                    ...$navigationHierarchyBreadcrumbs,
+                    ...$breadcrumbs,
+                ];
+            }
+        }
+
         if (filled($cluster = static::getCluster())) {
             return $cluster::unshiftClusterBreadcrumbs($breadcrumbs);
         }
@@ -232,6 +252,42 @@ abstract class Page extends BasePage
             ...$this->getResourceBreadcrumbs(),
             $this->getBreadcrumb(),
         ];
+    }
+
+    protected function getNavigationBreadcrumbItemKey(): string
+    {
+        return static::getResource();
+    }
+
+    protected function getNavigationBreadcrumbItemUrl(): ?string
+    {
+        $resource = static::getResource();
+
+        if ((! $resource::shouldRegisterNavigation()) || $resource::getParentResourceRegistration()) {
+            return null;
+        }
+
+        return $resource::getNavigationUrl();
+    }
+
+    protected function getSubNavigationBreadcrumbItemKey(): string
+    {
+        return $this->getSubNavigationParameters() ? static::class : parent::getSubNavigationBreadcrumbItemKey();
+    }
+
+    protected function getSubNavigationBreadcrumbItemUrl(): ?string
+    {
+        $parameters = $this->getSubNavigationParameters();
+
+        if (! $parameters) {
+            return parent::getSubNavigationBreadcrumbItemUrl();
+        }
+
+        if (! static::shouldRegisterNavigation($parameters)) {
+            return null;
+        }
+
+        return static::getNavigationUrl($parameters);
     }
 
     /**

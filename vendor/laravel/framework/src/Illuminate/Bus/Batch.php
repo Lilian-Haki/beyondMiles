@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Bus\Events\BatchCanceled;
 use Illuminate\Bus\Events\BatchFinished;
+use Illuminate\Bus\Events\BatchStarted;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Queue\Factory as QueueFactory;
@@ -136,7 +137,7 @@ class Batch implements Arrayable, JsonSerializable
     /**
      * Get a fresh instance of the batch represented by this ID.
      *
-     * @return self
+     * @return self|null
      */
     public function fresh()
     {
@@ -147,7 +148,7 @@ class Batch implements Arrayable, JsonSerializable
      * Add additional jobs to the batch.
      *
      * @param  \Illuminate\Support\Enumerable|object|array  $jobs
-     * @return self
+     * @return self|null
      */
     public function add($jobs)
     {
@@ -161,10 +162,17 @@ class Batch implements Arrayable, JsonSerializable
 
                 $chain = $this->prepareBatchedChain($job);
 
-                return $chain->first()
-                    ->allOnQueue($this->options['queue'] ?? null)
-                    ->allOnConnection($this->options['connection'] ?? null)
-                    ->chain($chain->slice(1)->values()->all());
+                $first = $chain->first();
+
+                if (isset($this->options['queue'])) {
+                    $first->allOnQueue($this->options['queue']);
+                }
+
+                if (isset($this->options['connection'])) {
+                    $first->allOnConnection($this->options['connection']);
+                }
+
+                return $first->chain($chain->slice(1)->values()->all());
             } else {
                 $job->withBatchId($this->id);
 
@@ -179,8 +187,8 @@ class Batch implements Arrayable, JsonSerializable
 
             $this->queue->connection($this->options['connection'] ?? null)->bulk(
                 $jobs->all(),
-                $data = '',
-                $this->options['queue'] ?? null
+                data: '',
+                queue: $this->options['queue'] ?? null
             );
         });
 
@@ -230,6 +238,14 @@ class Batch implements Arrayable, JsonSerializable
     {
         $counts = $this->decrementPendingJobs($jobId);
 
+        if ($this->isFirstJobProcessed($counts)) {
+            $container = Container::getInstance();
+
+            if ($container->bound(Dispatcher::class)) {
+                $container->make(Dispatcher::class)->dispatch(new BatchStarted($this));
+            }
+        }
+
         if ($this->hasProgressCallbacks()) {
             $this->invokeCallbacks('progress');
         }
@@ -240,7 +256,7 @@ class Batch implements Arrayable, JsonSerializable
             $container = Container::getInstance();
 
             if ($container->bound(Dispatcher::class)) {
-                $container->make(Dispatcher::class)->dispatch(new BatchFinished($this));
+                $container->make(Dispatcher::class)->dispatch(new BatchFinished($this->fresh() ?? $this));
             }
         }
 
@@ -335,6 +351,14 @@ class Batch implements Arrayable, JsonSerializable
     {
         $counts = $this->incrementFailedJobs($jobId);
 
+        if ($this->isFirstJobProcessed($counts)) {
+            $container = Container::getInstance();
+
+            if ($container->bound(Dispatcher::class)) {
+                $container->make(Dispatcher::class)->dispatch(new BatchStarted($this));
+            }
+        }
+
         if ($counts->failedJobs === 1 && ! $this->allowsFailures()) {
             $this->cancel($e);
         }
@@ -366,6 +390,16 @@ class Batch implements Arrayable, JsonSerializable
     public function incrementFailedJobs(string $jobId)
     {
         return $this->repository->incrementFailedJobs($this->id, $jobId);
+    }
+
+    /**
+     * Determine if this is the first job processed in the batch.
+     *
+     * @return bool
+     */
+    protected function isFirstJobProcessed(UpdatedBatchJobCounts $counts): bool
+    {
+        return $this->totalJobs - $counts->pendingJobs + $counts->failedJobs === 1;
     }
 
     /**
@@ -409,7 +443,7 @@ class Batch implements Arrayable, JsonSerializable
         $container = Container::getInstance();
 
         if ($container->bound(Dispatcher::class)) {
-            $container->make(Dispatcher::class)->dispatch(new BatchCanceled($this, $exception));
+            $container->make(Dispatcher::class)->dispatch(new BatchCanceled($this->fresh() ?? $this, $exception));
         }
     }
 

@@ -2,18 +2,18 @@
 
 namespace Filament\Actions\Concerns;
 
+use AnourValar\EloquentSerialize\Facades\EloquentSerializeFacade;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\Exports\Enums\Contracts\ExportFormat as ExportFormatInterface;
-use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Actions\Exports\ExportColumn;
+use Filament\Actions\Exports\ExportDispatcher;
 use Filament\Actions\Exports\Exporter;
-use Filament\Actions\Exports\Jobs\CreateXlsxFile;
-use Filament\Actions\Exports\Jobs\ExportCompletion;
 use Filament\Actions\Exports\Jobs\PrepareCsvExport;
 use Filament\Actions\Exports\Models\Export;
+use Filament\Actions\Testing\ExportFake;
 use Filament\Actions\View\ActionsIconAlias;
 use Filament\Facades\Filament;
 use Filament\Forms;
@@ -23,18 +23,14 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
-use Filament\Support\EloquentSerializer\EloquentSerializer;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\Support\Facades\FilamentIcon;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Contracts\HasTable;
-use Illuminate\Bus\PendingBatch;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Bus\PendingChain;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Number;
 use Livewire\Component;
 use LogicException;
@@ -112,7 +108,7 @@ trait CanExportRecords
                     $isEnablingVisibleTableColumnsByDefault = $action->isEnablingVisibleTableColumnsByDefault();
                     $visibleTableColumnNames = $isEnablingVisibleTableColumnsByDefault ? $action->getVisibleTableColumnNames() : [];
 
-                    $columns = $action->getExporter()::getColumns();
+                    $columns = $action->getExporter()::getVisibleColumns();
                     $hasMultipleToggleableColumns = count($columns) > 1;
 
                     return [
@@ -237,7 +233,7 @@ trait CanExportRecords
             $user = auth($authGuard)->user();
 
             if ($action->hasColumnMapping()) {
-                $columnMap = collect($exporter::getColumns())
+                $columnMap = collect($exporter::getVisibleColumns())
                     ->filter(fn (ExportColumn $column): bool => (bool) data_get($data['columnMap'], "{$column->getName()}.isEnabled", false))
                     ->mapWithKeys(fn (ExportColumn $column): array => [
                         $column->getName() => data_get($data['columnMap'], "{$column->getName()}.label", $column->getLabel()),
@@ -247,7 +243,7 @@ trait CanExportRecords
                 $isEnablingVisibleTableColumnsByDefault = $action->isEnablingVisibleTableColumnsByDefault();
                 $visibleTableColumnNames = $isEnablingVisibleTableColumnsByDefault ? $action->getVisibleTableColumnNames() : [];
 
-                $columnMap = collect($exporter::getColumns())
+                $columnMap = collect($exporter::getVisibleColumns())
                     ->when(
                         $isEnablingVisibleTableColumnsByDefault,
                         fn ($columns): Collection => $columns->filter(
@@ -284,74 +280,41 @@ trait CanExportRecords
             // Temporary save to obtain the sequence number of the export file.
             $export->save();
 
-            // Delete the export directory to prevent data contamination from previous exports with the same ID.
+            // Delete the export directory to prevent data contamination
+            // from previous exports with the same ID.
             $export->deleteFileDirectory();
 
             $export->file_name = $action->getFileName($export) ?? $exporter->getFileName($export);
             $export->save();
 
             $formats = $action->getFormats() ?? $exporter->getFormats();
-            $hasCsv = in_array(ExportFormat::Csv, $formats);
-            $hasXlsx = in_array(ExportFormat::Xlsx, $formats);
 
-            $serializedQuery = app(EloquentSerializer::class)->serialize($query);
+            $serializedQuery = EloquentSerializeFacade::serialize($query);
 
             $job = $action->getJob();
             $jobQueue = $exporter->getJobQueue();
             $jobConnection = $exporter->getJobConnection();
             $jobBatchName = $exporter->getJobBatchName();
 
-            // We do not want to send the loaded user relationship to the queue in job payloads,
-            // in case it contains attributes that are not serializable, such as binary columns.
+            // We do not want to send the loaded user relationship to the
+            // queue in job payloads, in case it contains attributes that
+            // are not serializable, such as binary columns.
             $export->unsetRelation('user');
 
-            $makeCreateXlsxFileJob = fn (): CreateXlsxFile => app(CreateXlsxFile::class, [
-                'export' => $export,
-                'columnMap' => $columnMap,
-                'options' => $options,
-            ]);
-
-            Bus::chain([
-                Bus::batch([app($job, [
-                    'export' => $export,
-                    'query' => $serializedQuery,
-                    'columnMap' => $columnMap,
-                    'options' => $options,
-                    'chunkSize' => $action->getChunkSize(),
-                    'records' => $records?->all(),
-                ])])
-                    ->allowFailures()
-                    ->when(
-                        filled($jobQueue),
-                        fn (PendingBatch $batch) => $batch->onQueue($jobQueue),
-                    )
-                    ->when(
-                        filled($jobConnection),
-                        fn (PendingBatch $batch) => $batch->onConnection($jobConnection),
-                    )
-                    ->when(
-                        filled($jobBatchName),
-                        fn (PendingBatch $batch) => $batch->name($jobBatchName),
-                    ),
-                ...(($hasXlsx && (! $hasCsv)) ? [$makeCreateXlsxFileJob()] : []),
-                app(ExportCompletion::class, [
-                    'authGuard' => $authGuard,
-                    'export' => $export,
-                    'columnMap' => $columnMap,
-                    'formats' => $formats,
-                    'options' => $options,
-                ]),
-                ...(($hasXlsx && $hasCsv) ? [$makeCreateXlsxFileJob()] : []),
-            ])
-                ->when(
-                    filled($jobQueue),
-                    fn (PendingChain $chain) => $chain->onQueue($jobQueue),
-                )
-                ->when(
-                    filled($jobConnection),
-                    fn (PendingChain $chain) => $chain->onConnection($jobConnection),
-                )
-                ->dispatch();
+            app(ExportDispatcher::class)->dispatch(
+                export: $export,
+                serializedQuery: $serializedQuery,
+                columnMap: $columnMap,
+                options: $options,
+                formats: $formats,
+                job: $job,
+                chunkSize: $action->getChunkSize(),
+                records: $records?->all(),
+                jobQueue: $jobQueue,
+                jobConnection: $jobConnection,
+                jobBatchName: $jobBatchName,
+                authGuard: $authGuard,
+            );
 
             if (
                 ($jobConnection === 'sync')
@@ -392,6 +355,15 @@ trait CanExportRecords
     public static function getDefaultName(): ?string
     {
         return 'export';
+    }
+
+    public static function fake(): ExportFake
+    {
+        $fake = app(ExportFake::class);
+
+        app()->instance(ExportDispatcher::class, $fake);
+
+        return $fake;
     }
 
     public function columnMappingColumns(int | Closure $columns): static
@@ -549,6 +521,9 @@ trait CanExportRecords
 
     public function modifyQueryUsing(?Closure $callback): static
     {
+        // Security: Exports do not check per-record policies. Use this
+        // to scope the query to records the user is authorized to see.
+
         $this->modifyQueryUsing = $callback;
 
         return $this;

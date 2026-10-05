@@ -1041,6 +1041,8 @@ ModalTableSelect::make('categories')
     ->badgeColor('success')
 ```
 
+<UtilityInjection set="formFields" version="5.x">As well as allowing a static value, the `badgeColor()` method also accepts a function to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
+
 ### Passing additional arguments to the table in a modal select
 
 You can pass arguments from your form to the table configuration class using the `tableArguments()` method. For example, this can be used to modify the table's query based on previously filled form fields:
@@ -1100,6 +1102,26 @@ class ProductsTable
     }
 }
 ```
+
+<Aside variant="danger">
+    Filtering the table's query using `modifyQueryUsing()` or `tableArguments()` is **presentational** — it only affects which records are displayed in the table for selection. It is **not** a security boundary: a user who tampers with the submitted form state can select a record that was excluded from the visible table, and it will still pass validation and be saved.
+
+    To restrict which records may actually be selected and saved, scope the field's relationship query instead, using the `modifyQueryUsing` argument of the [`relationship()` method](#customizing-the-relationship-query). Filament validates submitted values against that query, so records outside it are rejected:
+
+    ```php
+    use Filament\Forms\Components\ModalTableSelect;
+    use Illuminate\Database\Eloquent\Builder;
+
+    ModalTableSelect::make('products')
+        ->relationship(
+            name: 'products',
+            titleAttribute: 'name',
+            modifyQueryUsing: fn (Builder $query) => $query->whereBelongsTo(auth()->user()),
+        )
+        ->multiple()
+        ->tableConfiguration(ProductsTable::class)
+    ```
+</Aside>
 
 ## Select validation
 

@@ -249,6 +249,32 @@ Repeater::make('qualifications')
 
 <UtilityInjection set="formFields" version="5.x">As well as allowing static values, the `collapsible()` and `collapsed()` methods also accept functions to dynamically calculate it. You can inject various utilities into the function as parameters.</UtilityInjection>
 
+If collapsed items contain components that are expensive to render, you can [defer the loading of their schemas](#deferring-the-loading-of-repeater-item-schemas) until they are expanded.
+
+## Deferring the loading of repeater item schemas
+
+If a repeater's item schema is expensive to render, you can pass a `Schema` object to `schema()` and use `deferLoading()`. This is particularly useful when items are [collapsed](#collapsing-items) by default. Each item schema will be loaded independently when its item is expanded and enters the viewport:
+
+```php
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
+
+Repeater::make('members')
+    ->schema(
+        Schema::make()
+            ->components([
+                TextInput::make('name'),
+                TextInput::make('email')
+                    ->email(),
+            ])
+            ->deferLoading(),
+    )
+    ->collapsed()
+```
+
+Repeater item schemas automatically receive unique keys from their item state paths. You can learn more about deferred schemas in the [schema overview](../schemas/overview#deferring-the-loading-of-a-child-schema).
+
 ## Cloning items
 
 You may allow repeater items to be duplicated using the `cloneable()` method:
@@ -576,7 +602,7 @@ Repeater::make('members')
     Any fields that you use from `$state` should be `live()` if you wish to see the item label update live as you use the form.
 </Aside>
 
-<UtilityInjection set="formFields" version="5.x" extras="Item;;Filament\Schemas\Schema;;$item;;The schema object for the current repeater item.||Key;;string;;$key;;The key for the current repeater item.||State;;array<string, mixed>;;$state;;The raw unvalidated data for the current repeater item.">You can inject various utilities into the function passed to `itemLabel()` as parameters.</UtilityInjection>
+<UtilityInjection set="formFields" version="5.x" extras="Item;;Filament\Schemas\Schema;;$item;;The schema object for the current repeater item.||Key;;string;;$key;;The key for the current repeater item.||Index;;int;;$index;;The zero-based index of the current repeater item.||State;;array<string, mixed>;;$state;;The raw unvalidated data for the current repeater item.">You can inject various utilities into the function passed to `itemLabel()` as parameters.</UtilityInjection>
 
 <AutoScreenshot name="forms/fields/repeater/labelled" alt="Repeater with item labels" version="5.x" />
 

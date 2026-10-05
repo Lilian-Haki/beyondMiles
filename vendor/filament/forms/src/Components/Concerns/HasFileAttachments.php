@@ -104,7 +104,10 @@ trait HasFileAttachments
             return $savedFile;
         }
 
-        $path = $file->store($this->getFileAttachmentsDirectory(), $this->getFileAttachmentsDiskName());
+        $path = $file->store($this->getFileAttachmentsDirectory(), [
+            'disk' => $this->getFileAttachmentsDiskName(),
+            'mimetype' => $file->getMimeType(),
+        ]);
 
         if ($this->getFileAttachmentsVisibility() === 'public') {
             rescue(fn () => $this->getFileAttachmentsDisk()->setVisibility($path, 'public'), report: false);
@@ -247,7 +250,7 @@ trait HasFileAttachments
             try {
                 return $storage->temporaryUrl(
                     $file,
-                    now()->addMinutes(30)->endOfHour(),
+                    now()->addMinutes(config('filament.temporary_file_url_expiry_minutes', 30))->endOfHour(),
                 );
             } catch (Throwable $exception) {
                 // This driver does not support creating temporary URLs.

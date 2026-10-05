@@ -137,13 +137,17 @@ Route::name('filament.')
                                 }
 
                                 $routeGroup
-                                    ->group(function () use ($panel): void {
+                                    ->group(function () use ($hasTenancy, $panel, $tenantDomain): void {
                                         foreach ($panel->getAuthenticatedTenantRoutes() as $routes) {
                                             $routes($panel);
                                         }
 
                                         if (version_compare(Application::VERSION, '13.0.0', '<')) { /** @phpstan-ignore if.alwaysFalse, if.alwaysTrue */
-                                            Route::get('/', RedirectToHomeController::class)->name('home');
+                                            $route = Route::get('/', RedirectToHomeController::class)->name('home');
+
+                                            if ($hasTenancy && blank($tenantDomain)) {
+                                                $route->fallback();
+                                            }
                                         }
 
                                         Route::name('tenant.')->group(function () use ($panel): void {
@@ -183,12 +187,16 @@ Route::name('filament.')
 
                                         if (version_compare(Application::VERSION, '13.0.0', '>=')) { /** @phpstan-ignore if.alwaysTrue, if.alwaysFalse */
                                             $groupStack = Route::getGroupStack();
-                                            $rootDomain = RouteUri::parse(end($groupStack)['domain'] ?? '')->uri;
+                                            $rootDomain = RouteUri::parse(str_replace(['http://', 'https://'], '', end($groupStack)['domain'] ?? ''))->uri;
                                             $rootUri = RouteUri::parse(trim(Route::getLastGroupPrefix(), '/') ?: '/')->uri;
                                             $rootKey = $rootDomain . $rootUri;
 
                                             if (! isset(Route::getRoutes()->getRoutesByMethod()['GET'][$rootKey])) {
-                                                Route::get('/', RedirectToHomeController::class)->name('home');
+                                                $route = Route::get('/', RedirectToHomeController::class)->name('home');
+
+                                                if ($hasTenancy && blank($tenantDomain)) {
+                                                    $route->fallback();
+                                                }
                                             }
                                         }
                                     });
