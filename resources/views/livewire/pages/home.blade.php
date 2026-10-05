@@ -57,7 +57,7 @@ new class extends Component
 </div>
 <!-- Runs -->
 <div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer"><a href="/activities" wire:navigate>
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Trail runner sprinting on a forest path" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUfb0hULwhgSrAZQXLTRM5_MGt-VfaVMmS-7Oz53H04SjIrmJbTTAGGyGRI8pxrUSUOdz7h90QMfGpqxAV6QYHDePEkG261M9ByOWvbsoo_OIEH5RR271kTavZvl5HfoGVU_PE_LRBFJ244N6-jLKymC2bdejf2za05vy3qMtkN53Lp7VGcrfcY4o9Y2m4wASjx_7aliyTyGsnOiEmauYaWRJwHTq4q-aFYH4IkZ9U3G_pDaoByJTzywoAWgBX9bJ4oZ8ItLSuGSk");'></div>
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Trail runner sprisprintingon a forest path" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://images.unsplash.com/photo-1723882559473-62932ec7b4f9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGJsYWNrJTIwbWFuJTIwcnVubmluZ3xlbnwwfHwwfHx8MA%3D%3D");'></div>
 <div class="absolute bottom-0 p-8">
 <h3 class="text-2xl font-bold text-white mb-2">Runs</h3>
 <p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Endurance trail running events and training.</p>
@@ -65,7 +65,7 @@ new class extends Component
 </div>
 <!-- Walks -->
 <div class="group relative h-[400px] overflow-hidden rounded-xl cursor-pointer"><a href="/activities" wire:navigate>
-<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Peaceful sunlit path through ancient woods" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBU-YZP_il8FnLUnQ5H-Y7snasER6HXmE3EyfiYFDAuQmZBJpmLAdiqhhV-0UnRdJHXbGWrgdKjv-mMXUU_g_TJEsv3ETaGXn1pCwXIxUe56f8vKtoKVKfM1US_l0B460MpcgXWRz4QlQvKk4J84CQZDWzeAECGzG6_1Ynpmhv9s4aV_aLKqWLeAziqYkW3NgSkXEMzkZTCvnbLfC42xg3AJvpfSCuMdT4rwVpSdGw8kE0RFP-iubIA6_YRcD77sIglK-2xtmE07B0");'></div>
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Peaceful sunlit path through ancient woods" style='background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url("https://images.unsplash.com/photo-1700745286959-8658de43a15c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fHRyYWlsfGVufDB8fDB8fHww");'></div>
 <div class="absolute bottom-0 p-8">
 <h3 class="text-2xl font-bold text-white mb-2">Walks</h3>
 <p class="text-slate-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">Guided nature walks and mindful exploration.</p>
@@ -80,12 +80,12 @@ new class extends Component
 <div class="relative">
 <div class="grid grid-cols-2 gap-4">
 <div class="space-y-4 pt-12">
-<img class="rounded-xl w-full h-64 object-cover" data-alt="Group of friends high-fiving at a mountain summit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9rWmNBkb9dBImLrnFySsdv8cpGPFSZL1HA41-qnhzCFK0w1Tl6fBDiZwnkTrqRhSD2v1QL-H_R6NY5s7ELczwOlOt17MQyLTeGDey5_NAlZclPJrEI_AKVaURHtTVI8H4fCO_WR6bsIpgFYEGblWIJATgbkU3XyhnMWWr9eOqKUrRx2OWZpNkMZNXizqy9H3J5xvw26gkcEPWB5BX49mldUCxY9Nb9sxnRMvSInKGVS12wcuY0YgGNOvF92Z8rQDzbXWuVmxTLEg"/>
-<img class="rounded-xl w-full h-48 object-cover" data-alt="Trail running group training together in the morning" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnHfATT1M-pywZ6g1z587tflMGRwBlcbqBsiAfhKF8HmdcU2bl2YIkyTKeEIwb-Cbo1r8xTGIVoWKcqVcImZVuyuttGXQUJeYgJMIcgdUmQLdPKn4Jhi9MvW6AW9Rie6qp31zFz2laByTZaxWOOBrV48UD3l5fDskVkLGurfn3CcgQluFcOiwwi5CSt4rKJWH60us9_d2pPA_WI0U9LRLz-uQPG6-h1VZLUCQJWJCCAeMlzrM1ivotjGCI1lkm_OEoxLmNgdz-wqs"/>
+<img class="rounded-xl w-full h-64 object-cover" data-alt="Group of friends hiking" src="https://images.unsplash.com/photo-1627289496743-8a9a08bb228a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Z3JvdXAlMjBoaWtlfGVufDB8fDB8fHww"/>
+<img class="rounded-xl w-full h-48 object-cover" data-alt="Trail running group training together in the morning" src="https://images.unsplash.com/photo-1612888225637-35f4b0456634?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzZ8fHN3aW1taW5nJTIwaW4lMjB3YXRlcmZhbGx8ZW58MHx8MHx8fDA%3D"/>
 </div>
 <div class="space-y-4">
-<img class="rounded-xl w-full h-48 object-cover" data-alt="Hiker showing a thumbs up next to a campfire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAj7DkdIY0ZP-seZW3MrpYYv7-2d5Ob7MudsaN6He3GKUHXzgKny9KG67UOoYFNs42BLW2XtDZBVaSAQRayuly_WUcnWOdjHJpwSduPIRCeoKwsQg6c_j1e54U0m8_jhM55J7E7is1Z4V5e4H2yvTQ5reoNtY_ogfrRYRfmRhjzMUdx_Wi1n4I_yby_yn9AGJGa6n7Sx3K1LAY01sRFcLjZ4ikGEgpYesRqBKoqlWqy_3VXVdz830jU317NGB2WJ-XSLqcqT-9gmY"/>
-<img class="rounded-xl w-full h-64 object-cover" data-alt="Community gathering at a modern climbing gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGL4I7cq57jX40GytfhVJwUelRrHU5gia7LzSaXmt57VecaadM9E-bdd7EmoP3kfc6lbigMJSGoCyeiZgr-iwb_sHwV2ymieC80dtl_JCJN1ZsHcwlkelfMxAR7W9JlIYwNMt0G0MPvTbhs_W4ol_8Hyb9OePaep4t-10Ap-KJmRWDOlUfwKjVjGpO_5nCjPyNiHu-kzcqyS1FkwNSkdFm2RWhinjhIU5mCzGJznjRlcInj_fgKXDuYbQ-bx_g0lcTEurr012i6ec"/>
+<img class="rounded-xl w-full h-48 object-cover" data-alt="Well lit Bonfire" src="https://images.unsplash.com/photo-1568494354623-3d36e8d537b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGJvbmZpcmV8ZW58MHx8MHx8fDA%3D"/>
+<img class="rounded-xl w-full h-64 object-cover" data-alt="Community hanging out" src="https://images.unsplash.com/photo-1734914312670-1b540001a66d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTl8fGJsYWNrJTIwcGVvcGxlJTIwcGxheWluZ3xlbnwwfHwwfHx8MA%3D%3D"/>
 </div>
 </div>
 <div class="absolute -z-10 top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>

@@ -12,15 +12,13 @@ new class extends Component {
 <footer class="bg-slate-900 text-white pt-24 pb-12 px-6 lg:px-10">
 <div class="max-w-7xl mx-auto">
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
-<div class="space-y-6">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-3xl text-primary">explore</span>
-<span class="text-xl font-bold tracking-tight">Beyond Miles</span>
-</div>
-<p class="text-slate-400 text-sm leading-relaxed">
+<div class="-mt-16">
+<img src="{{ asset('storage/bmlogo.png') }}" alt="Beyond Miles logo" class="h-fit rounded-full " />
+<!-- <span class="text-xl font-bold tracking-tight">Beyond Miles</span> -->
+<p class="text-slate-400 -mt-20 text-sm leading-relaxed">
                             Empowering the explorer in everyone. We provide the tools, the community, and the inspiration to help you go further.
                         </p>
-<div class="flex gap-4">
+<div class="flex gap-4 mt-4">
 <a class="text-slate-400 hover:text-primary transition-colors" href="https://www.beyondmiles.com" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined">public</span></a>
 <a class="text-slate-400 hover:text-primary transition-colors" href="https://www.facebook.com/beyondmiles" target="_blank" rel="noopener noreferrer"><span class="material-symbols-outlined">share</span></a>
 <a class="text-slate-400 hover:text-primary transition-colors" href="mailto:support@beyondmiles.com"><span class="material-symbols-outlined">mail</span></a>

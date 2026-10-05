@@ -22,10 +22,10 @@ use Livewire\Component;
 <header class="sticky top-0 z-50 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200! dark:border-slate-800!">
 <div class="max-w-7xl mx-auto px-6 lg:px-10 py-4 flex items-center justify-between">
 <div class="flex items-center gap-3">
-<div class="text-primary flex items-center justify-center">
-<span class="material-symbols-outlined text-4xl" data-icon="explore">explore</span>
-</div>
-<a href="/" wire:navigate><h1 class="text-xl font-bold tracking-tight text-slate-900! dark:text-slate-100!">Beyond Miles</h1></a>
+<a href="/" wire:navigate class="flex items-center gap-3">
+    <img src="{{ asset('storage/bmlogo.png') }}" alt="Beyond Miles logo" class="h-16 w-14 rounded-full " />
+    <h1 class="text-xl font-bold tracking-tight text-slate-900! dark:text-slate-100!">Beyond Miles</h1>
+</a>
 </div>
 <nav class="hidden md:flex items-center gap-10">
 <a class="text-sm font-semibold hover:text-primary transition-colors" href="/activities" wire:navigate>Activities</a>
