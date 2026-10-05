@@ -1,18 +1,18 @@
 FROM php:8.4-cli
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    curl \
     libzip-dev \
     libicu-dev \
     libpq-dev \
-    curl \
     && docker-php-ext-install \
-    intl \
-    zip \
-    pdo \
-    pdo_mysql \
+        intl \
+        zip \
+        pdo \
+        pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -25,30 +25,34 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 
 WORKDIR /var/www/html
 
-# Copy Composer files first
-COPY composer.json composer.lock ./
+# Copy the ENTIRE Laravel application first
+COPY . .
 
 # Install PHP dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --prefer-dist
 
-# Copy the application
-COPY . .
+# Install frontend dependencies
+RUN npm ci
 
-# Install JS dependencies and build Vite assets
-RUN npm install
+# Build Vite assets
 RUN npm run build
 
-# Laravel storage permissions
-RUN mkdir -p storage/framework/cache \
+# Create Laravel runtime directories
+RUN mkdir -p \
+    storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
     storage/logs \
     bootstrap/cache
 
+# Set permissions
 RUN chmod -R 775 storage bootstrap/cache
 
-# Railway provides PORT dynamically
+# Railway provides the PORT environment variable
+EXPOSE 8080
+
 CMD php artisan serve --host=0.0.0.0 --port=${PORT}
